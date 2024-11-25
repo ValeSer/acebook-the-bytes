@@ -11,6 +11,9 @@ The application uses:
   
 Below, you'll find specific learning objectives for each tool.
 
+## Trello 
+Ensure to make sure of your team's Trello (https://trello.com/b/1FsF1kNo/acebook-meta-sd-specialism)
+
 ## QuickStart Instructions
 
 - Fork and clone this repository to your machine
