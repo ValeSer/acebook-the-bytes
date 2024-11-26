@@ -1,22 +1,15 @@
---DROP TABLES
-DROP TABLE IF EXISTS notifications;
-DROP TABLE IF EXISTS post_likes;
-DROP TABLE IF EXISTS posts;
-DROP TABLE IF EXISTS comment_likes;
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS messages;
-DROP TABLE IF EXISTS chats;
-DROP TABLE IF EXISTS friendships;
+--UPDATE EXISTING USERS TABLE
+ALTER TABLE users
+ADD my_status VARCHAR(255),
+ADD profile_photo_url TEXT,
+ADD bio TEXT;
 
---CREATE POSTS TABLE
-CREATE TABLE posts (
-  id bigserial PRIMARY KEY,
-  content varchar(250) NOT NULL,
-  photo_url TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  user_id INT,
-  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+--UPDATE EXISTING POSTS TABLE
+ALTER TABLE posts
+ADD photo_url TEXT,
+ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ADD user_id INT,
+ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 --CREATE POST_LIKES TABLE
 CREATE TABLE post_likes (
@@ -100,16 +93,3 @@ CREATE TABLE notifications (
   CONSTRAINT fk_friendship FOREIGN KEY (friendship_id) REFERENCES friendships(id) ON DELETE CASCADE,
   CONSTRAINT fk_chat FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
 );
-
---CREATE POSTS TABLE
---CREATE TABLE posts (
---  id bigserial PRIMARY KEY,
---  content varchar(250) NOT NULL,
---  photo_url TEXT,
---  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---  user_id INT,
---  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
---);
-
---INSERT POSTS SEEDS
-INSERT INTO (content, photo_url, user_id) VALUES ();
