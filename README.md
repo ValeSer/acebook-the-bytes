@@ -14,11 +14,28 @@ Below, you'll find specific learning objectives for each tool.
 ## QuickStart Instructions
 
 - Fork and clone this repository to your machine
-- Open the codebase in an IDE like InteliJ or VSCode
+- Open the codebase in an IDE like IntelliJ or VSCode
 - Create a new Postgres database called `acebook_springboot_development`
 - Install Maven `brew install maven`
 - [Set up Auth0](https://journey.makers.tech/pages/auth0) (you only need the "Create an Auth0 app" section)
   - NOTE: Each member of the team will need their own Auth0 app
+  - Create a file .env with this structure:
+      OKTA_ISSUER=<your-domain>
+      OKTA_CLIENT_ID=<your-client-ID>
+      OKTA_CLIENT_SECRET=<your_client_secret>
+  
+  Make sure the naming matches the one on the file application.yml:
+    issuer: ${OKTA_ISSUER}
+    client-id: ${OKTA_CLIENT_ID}
+    client-secret: ${OKTA_CLIENT_SECRET}
+- update your .gitignore with .env
+- add dependencies in pom.xml:
+  <dependency>
+    <groupId>com.okta.spring</groupId>
+    <artifactId>okta-spring-boot-starter</artifactId>
+    <version>3.0.7</version>
+  </dependency>
+
 - Build the app and start the server, using the Maven command `mvn spring-boot:run`
 > The database migrations will run automatically at this point
 - Visit `http://localhost:8080/` to sign up
