@@ -32,13 +32,13 @@ Below, you'll find specific learning objectives for each tool.
 - update your .gitignore with .env
 
 - add dependencies in pom.xml: <br>
-<br>
+```xml
   <dependency>
       <groupId>com.okta.spring</groupId>
       <artifactId>okta-spring-boot-starter</artifactId>
       <version>3.0.7</version>
     </dependency>
-
+```
 - Build the app and start the server, using the Maven command `mvn spring-boot:run`
 > The database migrations will run automatically at this point
 - Visit `http://localhost:8080/` to sign up
@@ -119,5 +119,3 @@ complexity, in Java. It's OK if you need to pause here with Acebook and learn ho
 ### Spring Security and Auth0
 - [ ] I can explain how this app is secured
 
-
-test2
