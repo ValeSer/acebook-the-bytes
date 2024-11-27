@@ -1,30 +1,30 @@
 package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.model.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Optional;
+
 @RestController
 public class UsersController {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
-    @GetMapping("/users/after-login")
-    public RedirectView afterLogin() {
+    @GetMapping("/profile")
+    public Optional<User> getUserProfile() {
+        return Optional.ofNullable(userService.getUserProfile());
+    }
+
+    public String getAuthenticatedUserEmail() {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
-
-        String username = (String) principal.getAttributes().get("email");
-        userRepository
-                .findUserByUsername(username)
-                .orElseGet(() -> userRepository.save(new User(username)));
-
-        return new RedirectView("/posts");
+        return (String) principal.getAttributes().get("email");  // Email used as the username
     }
 }
