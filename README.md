@@ -46,6 +46,8 @@ Below, you'll find specific learning objectives for each tool.
 ## Running the tests
 
 - Install chromedriver using `brew install chromedriver`
+- In the terminal, at the same level of the project run:  `psql -U username -d acebook_springboot_development`
+  - And after: `\i src/main/resources/db/seeds/R__new_dev_seed.sql`
 - Start the server in a terminal session `mvn spring-boot:run`
 - Open a new terminal session and navigate to the Acebook directory
 - Run your tests in the second terminal session with `mvn test`
