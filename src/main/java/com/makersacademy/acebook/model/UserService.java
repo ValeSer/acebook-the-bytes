@@ -3,6 +3,7 @@ package com.makersacademy.acebook.model;
 import com.makersacademy.acebook.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,12 @@ public class UserService {
     @Autowired
     public UserRepository userRepository;
 
-
     public User getUserProfile() {
         String username = getAuthenticatedUserEmail();
         return userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
     }
-
 
     public String getAuthenticatedUserEmail() {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
@@ -52,10 +51,14 @@ public class UserService {
 
         // Save the updated user profile to the database
         userRepository.save(existingUser);
-
-
     }
 
+    public Iterable<User> getUsersBySearchTerm(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return userRepository.findAll();
+        }
+        return userRepository.searchByName(query);
+    }
 }
 
 

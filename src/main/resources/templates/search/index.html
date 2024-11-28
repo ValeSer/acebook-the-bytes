@@ -28,7 +28,9 @@
       <div class="clickable blue_btn"><a>Add Friend</a></div>
     </div>
   </div>
-
+  <div th:if="${users.size() == 0}">
+    <p class="search_no_results_text">No results found.</p>
+  </div>
 
 </body>
 </html>
