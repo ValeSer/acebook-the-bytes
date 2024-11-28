@@ -1,0 +1,41 @@
+/* Profile update form styling */
+#updateForm {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+#updateForm input,
+#updateForm textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+#updateForm button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#updateForm button:hover {
+  background-color: #0056b3;
+}
+
+/* Optional: Styling for the edit button */
+#editButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+#editButton:hover {
+  background-color: #218838;
+}

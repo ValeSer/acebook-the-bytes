@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/mainprofile.css" />
+  <link rel="stylesheet" href="/css/postsprofile.css" />
+  <link rel="stylesheet" href="/css/navprofile.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <title>User Profile</title>
+  <style>
+    /* Initially hide the update form */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav>
+    <ul>
+      <li><a th:href="@{/posts}">Posts</a></li>
+      <li><a th:href="@{/profile}" class="active">Profile</a></li>
+      <li><a th:href="@{/logout}">Logout</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Profile Page Content -->
+<div class="profile-container">
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <!-- Profile Picture -->
+<!--    <div class="profile-photo">-->
+<!--      <img th:src="${user.profilePhotoUrl != null ? user.profilePhotoUrl : '/images/default-profile.png'}"-->
+<!--           th:alt="'Profile photo of ' + ${user.firstName} + ' ' + ${user.lastName}" width="150" height="150" />-->
+<!--    </div>-->
+    <!-- User Info -->
+    <div class="profile-info">
+      <h1 th:text="${user.firstName} + ' ' + ${user.lastName}">User Full Name</h1>
+      <p th:text="'@' + ${user.username}">@username</p>
+      <p><strong>Status:</strong>
+        <span th:text="${user.myStatus != null ? user.myStatus : 'No status set'}">No status set</span>
+      </p>
+      <p><strong>Bio:</strong>
+        <span th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span>
+      </p>
+
+      <!-- Button to show update form -->
+      <button type="button" id="editButton" onclick="toggleUpdateForm()">Update Profile</button>
+
+      <!-- Update Form (Initially Hidden) -->
+      <form id="updateForm" th:action="@{/users/update}" th:object="${user}" method="post" class="hidden">
+        <div>
+          <label for="myStatus">Status</label>
+          <input type="text" id="myStatus" th:field="*{myStatus}" placeholder="Enter new status" required maxlength="150" />
+        </div>
+        <div>
+          <label for="bio">Bio</label>
+          <textarea id="bio" th:field="*{bio}" placeholder="Enter new bio" required maxlength="300"></textarea>
+        </div>
+        <button type="submit">Save Changes</button>
+        <button type="button" onclick="toggleUpdateForm()">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to toggle the visibility of the update form
+  function toggleUpdateForm() {
+    const form = document.getElementById("updateForm");
+    form.classList.toggle("hidden");
+  }
+</script>
+
+</body>
+</html>
+
