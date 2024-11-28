@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/mainprofile.css" />
+  <link rel="stylesheet" href="/css/postsprofile.css" />
+  <link rel="stylesheet" href="/css/navprofile.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <title>User Profile</title>
 </head>
 <body>
@@ -29,10 +36,24 @@
     <div class="profile-info">
       <h1 th:text="${user.firstName} + ' ' + ${user.lastName}">User Full Name</h1>
       <p th:text="'@' + ${user.username}">@username</p>
-      <p><strong>Status:</strong> <span th:text="${user.myStatus != null ? user.myStatus : 'No status set'}">No status set</span></p>
-      <p><strong>Bio:</strong> <span th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span></p>
+
+      <!-- Editable Status -->
+      <form th:action="@{/profile/update}" th:object="${user}" method="post">
+        <!-- Other form fields -->
+
+        <label for="myStatus">Status</label>
+        <input type="text" id="myStatus" th:field="*{myStatus}" placeholder="Enter your status"/>
+
+        <label for="bio">Bio</label>
+        <textarea id="bio" th:field="*{bio}" placeholder="Write your bio..."></textarea>
+
+        <button type="submit">Update Profile</button>
+      </form>
+
+      <p th:if="${message}" th:text="${message}" class="success-message"></p> <!-- Display success message -->
     </div>
   </div>
 </div>
+
 </body>
 </html>

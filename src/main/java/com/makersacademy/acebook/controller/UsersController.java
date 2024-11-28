@@ -1,6 +1,5 @@
 package com.makersacademy.acebook.controller;
 
-
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.model.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,17 +10,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-
-import java.util.Optional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UsersController {
+
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/profile")
     public ModelAndView getUserProfile() {
@@ -35,6 +33,29 @@ public class UsersController {
             modelAndView.setViewName("error");
         }
         return modelAndView;
+    }
+
+    // POST request for updating bio and status
+    @PostMapping("/profile/update")
+    public String updateProfile(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        // Get the currently authenticated user
+        User currentUser = userService.getUserProfile();
+
+        if (currentUser != null) {
+            // Update the user's bio and status
+            currentUser.setBio(user.getBio());
+            currentUser.setMyStatus(user.getMyStatus());
+
+            // Save the updated user to the database
+            userService.updateUser(currentUser);
+
+            // Add success message to be displayed on profile page
+            redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Unable to update profile.");
+        }
+
+        return "redirect:/profile"; // Redirect back to profile page
     }
 
     @GetMapping("/home")
@@ -52,6 +73,7 @@ public class UsersController {
         return "redirect:/";
     }
 
+    // Utility method to get the authenticated user's email
     public String getAuthenticatedUserEmail() {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
