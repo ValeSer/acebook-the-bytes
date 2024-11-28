@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+</head>
+<body>
+<header>
+  <nav>
+    <ul>
+      <li><a th:href="@{/posts}">Posts</a></li>
+      <li><a th:href="@{/profile}">Profile</a></li>
+      <li><a th:href="@{/logout}">Logout</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Profile Page Content -->
+<div class="profile-container">
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <!-- Profile Picture -->
+    <div class="profile-photo">
+      <img th:src="${user.profilePhotoUrl != null ? user.profilePhotoUrl : '/images/default-profile.png'}"
+           alt="Profile Photo" width="150" height="150" />
+    </div>
+    <!-- User Info -->
+    <div class="profile-info">
+      <h1 th:text="${user.firstName} + ' ' + ${user.lastName}">User Full Name</h1>
+      <p th:text="'@' + ${user.username}">@username</p>
+      <p><strong>Status:</strong> <span th:text="${user.myStatus != null ? user.myStatus : 'No status set'}">No status set</span></p>
+      <p><strong>Bio:</strong> <span th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

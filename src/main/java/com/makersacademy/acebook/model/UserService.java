@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,36 +23,36 @@ public class UserService {
 
     }
 
-    public User updateUserProfile(String username, User updatedUser) {
-        User existingUser = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (updatedUser.getFirstName() != null) {
-            existingUser.setFirstName(updatedUser.getFirstName());
-        }
-        if (updatedUser.getLastName() != null) {
-            existingUser.setLastName(updatedUser.getLastName());
-        }
-        if (updatedUser.getBio() != null) {
-            existingUser.setBio(updatedUser.getBio());
-        }
-        if (updatedUser.getMyStatus() != null) {
-            existingUser.setMyStatus(updatedUser.getMyStatus());
-        }
-        if (updatedUser.getProfilePhotoUrl() != null) {
-            existingUser.setProfilePhotoUrl(updatedUser.getProfilePhotoUrl());
-        }
-        return userRepository.save(existingUser);
-    }
-
-    private String getAuthenticatedUserEmail() {
+    public String getAuthenticatedUserEmail() {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
         return (String) principal.getAttributes().get("email");
+    }
+
+//    public User updateUserProfile(String username, User updatedUser) {
+//        User existingUser = userRepository.findUserByUsername(username)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+
+//        if (updatedUser.getFirstName() != null) {
+//            existingUser.setFirstName(updatedUser.getFirstName());
+//        }
+//        if (updatedUser.getLastName() != null) {
+//            existingUser.setLastName(updatedUser.getLastName());
+//        }
+//        if (updatedUser.getBio() != null) {
+//            existingUser.setBio(updatedUser.getBio());
+//        }
+//        if (updatedUser.getMyStatus() != null) {
+//            existingUser.setMyStatus(updatedUser.getMyStatus());
+//        }
+//        if (updatedUser.getProfilePhotoUrl() != null) {
+//            existingUser.setProfilePhotoUrl(updatedUser.getProfilePhotoUrl());
+//        }
+//        return userRepository.save(existingUser);
+
 
     }
 
 
-}
