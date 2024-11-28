@@ -13,12 +13,12 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     </head>
     <body>
-    <div th:insert="fragments/nav :: navigation"></div>
-    <h1>Posts</h1>
+        <div th:insert="fragments/nav :: navigation"></div>
+        <h1 class="page_header posts_header">Posts</h1>
 
-    <div sec:authorize="isAuthenticated()" id="greeting">
-        Signed in as <span sec:authentication="principal.attributes['email']"></span>
-    </div>
+        <div sec:authorize="isAuthenticated()" id="greeting">
+            Signed in as <span sec:authentication="principal.attributes['email']"></span>
+        </div>
 
     <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
         <p>Content: <input id="content" type="text" th:field="*{content}" /></p>
@@ -26,10 +26,16 @@
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
-    <ul th:each="post: ${posts}">
-        <li th:text="${post.content}" />
-        <li th:text="${post.createdAt}" />
-    </ul>
+        <div class="results-container posts_container">
+            <div th:each="post: ${posts}" class="card post_card">
+                <div>
+<!--                    <p th:text="${post.user_id}"></p>-->
+<!--                    <p th:text="${post.photo_url}"></p>-->
+                    <p th:text="${post.content}"></p>
+                    <p th:text="${post.createdAt}"></p>
+                </div>
+            </div>
+        </div>
 
     </body>
 </html>
