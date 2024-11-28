@@ -21,7 +21,8 @@
     </div>
 
     <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
-        <p>Content: <input type="text" th:field="*{content}" /></p>
+        <p>Content: <input id="content" type="text" th:field="*{content}" /></p>
+        <p>Photo: <input id="photoUrl" type="text" th:field="*{photoUrl}" /></p>
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
