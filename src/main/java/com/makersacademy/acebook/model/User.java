@@ -2,7 +2,11 @@ package com.makersacademy.acebook.model;
 
 import com.makersacademy.acebook.repository.UserRepository;
 import jakarta.persistence.*;
+import lombok.Data;
 
+import static java.lang.Boolean.TRUE;
+
+@Data
 @Entity
 @Table(name = "USERS")
 public class User {
@@ -19,8 +23,12 @@ public class User {
     private String lastName;
 
 
-    public User() {}
+    public User() {this.enabled = TRUE;}
 
+    public User(String username) {
+        this.username = username;
+        this.enabled = TRUE;
+    }
 
     public User(String username, String myStatus, String profilePhotoUrl, String bio, String firstName, String lastName) {
         this.username = username;

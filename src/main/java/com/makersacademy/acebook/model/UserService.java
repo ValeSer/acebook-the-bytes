@@ -32,7 +32,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser(User updatedUser) {
+    public void updateUser(User updatedUser) {
         String username = getAuthenticatedUserEmail();  // Get the currently authenticated user's username (email)
 
         // Find the existing user by their username
@@ -46,12 +46,12 @@ public class UserService {
         if (updatedUser.getMyStatus() != null && !updatedUser.getMyStatus().isEmpty()) {
             existingUser.setMyStatus(updatedUser.getMyStatus());
         }
-        if (updatedUser.getProfilePhotoUrl() != null && !updatedUser.getProfilePhotoUrl().isEmpty()) {
-            existingUser.setProfilePhotoUrl(updatedUser.getProfilePhotoUrl());
-        }
+//        if (updatedUser.getProfilePhotoUrl() != null && !updatedUser.getProfilePhotoUrl().isEmpty()) {
+//            existingUser.setProfilePhotoUrl(updatedUser.getProfilePhotoUrl());
+//        }
 
         // Save the updated user profile to the database
-        return userRepository.save(existingUser);
+        userRepository.save(existingUser);
 
 
     }
