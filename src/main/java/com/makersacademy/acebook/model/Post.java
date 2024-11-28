@@ -38,6 +38,10 @@ public class Post {
         this.userId = userId;
     }
 
+    public Long getId(){
+        return this.id;
+    }
+
     public String getContent() {
         return this.content;
     }
