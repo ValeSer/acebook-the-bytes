@@ -18,10 +18,10 @@ public class User {
     private String firstName;
     private String lastName;
 
-    // Default constructor
+
     public User() {}
 
-    // Constructor with parameters
+
     public User(String username, String myStatus, String profilePhotoUrl, String bio, String firstName, String lastName) {
         this.username = username;
         this.myStatus = myStatus;

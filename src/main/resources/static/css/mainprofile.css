@@ -1,43 +1,41 @@
-body {
-    margin: 0;
-    font-family: Roboto;
-    background-color: var(--light-grey);
+/* Profile update form styling */
+#updateForm {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+#updateForm input,
+#updateForm textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
 }
 
-:root {
-    --acebook-blue: #3A5997;
-    --light-grey: #F3F4F7;
-    --default-box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+#updateForm button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-.blue_btn {
-    background-color: var(--acebook-blue);
-    color: white;
-    border-radius: 16px;
-    height: 2rem;
-    width: 8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#updateForm button:hover {
+  background-color: #0056b3;
 }
 
-.white_btn {
-    background-color: white;
-    border: 2px solid var(--acebook-blue);
-    color: var(--acebook-blue);
-    border-radius: 16px;
-    height: 2rem;
-    width: 8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Optional: Styling for the edit button */
+#editButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
 }
 
-.clickable:hover {
-    cursor: pointer;
+#editButton:hover {
+  background-color: #218838;
 }

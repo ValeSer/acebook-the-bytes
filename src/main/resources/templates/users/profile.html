@@ -11,6 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <title>User Profile</title>
+  <style>
+    /* Initially hide the update form */
+    #updateForm {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -36,24 +42,36 @@
     <div class="profile-info">
       <h1 th:text="${user.firstName} + ' ' + ${user.lastName}">User Full Name</h1>
       <p th:text="'@' + ${user.username}">@username</p>
+      <p><strong>Status:</strong> <span th:text="${user.myStatus != null ? user.myStatus : 'No status set'}">No status set</span></p>
+      <p><strong>Bio:</strong> <span th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span></p>
 
-      <!-- Editable Status -->
-      <form th:action="@{/profile/update}" th:object="${user}" method="post">
-        <!-- Other form fields -->
+      <!-- Button to show update form -->
+      <button type="button" id="editButton" onclick="toggleUpdateForm()">Update Profile</button>
 
-        <label for="myStatus">Status</label>
-        <input type="text" id="myStatus" th:field="*{myStatus}" placeholder="Enter your status"/>
-
-        <label for="bio">Bio</label>
-        <textarea id="bio" th:field="*{bio}" placeholder="Write your bio..."></textarea>
-
+      <!-- Update Form (Initially Hidden) -->
+      <form id="updateForm" th:action="@{/profile/update}" th:object="${user}" method="post">
+        <div>
+          <label for="myStatus">Status</label>
+          <input type="text" id="myStatus" th:field="*{myStatus}" placeholder="Enter new status" />
+        </div>
+        <div>
+          <label for="bio">Bio</label>
+          <textarea id="bio" th:field="*{bio}" placeholder="Enter new bio"></textarea>
+        </div>
         <button type="submit">Update Profile</button>
+        <button type="button" onclick="toggleUpdateForm()">Cancel</button>
       </form>
-
-      <p th:if="${message}" th:text="${message}" class="success-message"></p> <!-- Display success message -->
     </div>
   </div>
 </div>
+
+<script>
+  // Function to toggle the visibility of the update form
+  function toggleUpdateForm() {
+    const form = document.getElementById("updateForm");
+    form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
+  }
+</script>
 
 </body>
 </html>

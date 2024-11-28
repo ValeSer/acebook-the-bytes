@@ -35,33 +35,29 @@ public class UsersController {
         return modelAndView;
     }
 
-    // POST request for updating bio and status
     @PostMapping("/profile/update")
     public String updateProfile(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-        // Get the currently authenticated user
-        User currentUser = userService.getUserProfile();
-
-        if (currentUser != null) {
-            // Update the user's bio and status
-            currentUser.setBio(user.getBio());
-            currentUser.setMyStatus(user.getMyStatus());
-
-            // Save the updated user to the database
-            userService.updateUser(currentUser);
-
-            // Add success message to be displayed on profile page
-            redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Unable to update profile.");
+        if (user.getId() == null) {
+            redirectAttributes.addFlashAttribute("error", "User ID is missing");
+            return "redirect:/profile";
         }
 
-        return "redirect:/profile"; // Redirect back to profile page
+
+        userService.updateUser(user);
+
+        redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
+
+        return "redirect:/profile";
     }
+
+
+
+
 
     @GetMapping("/home")
     public String getHomepage(Model model) {
         model.addAttribute("message", "Welcome to the homepage!");
-        return "home"; // Return the homepage view (home.html)
+        return "home";
     }
 
     @GetMapping("/logout")
@@ -73,12 +69,12 @@ public class UsersController {
         return "redirect:/";
     }
 
-    // Utility method to get the authenticated user's email
+
     public String getAuthenticatedUserEmail() {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
-        return (String) principal.getAttributes().get("email");  // Email used as the username
+        return (String) principal.getAttributes().get("email");
     }
 }
