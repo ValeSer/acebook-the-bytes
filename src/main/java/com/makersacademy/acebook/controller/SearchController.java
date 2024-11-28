@@ -1,6 +1,7 @@
 package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.User;
+import com.makersacademy.acebook.model.UserService;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,13 @@ import java.util.List;
 public class SearchController {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/search")
     public ModelAndView viewSearchResults(@RequestParam(value = "nav-search", required = false) String query) {
         ModelAndView searchView = new ModelAndView("/search/index");
-        List<User> allUsers = (List<User>) userRepository.findAll();
+        List<User> allUsers = (List<User>) userService.getUsersBySearchTerm(query);
         searchView.addObject("users", allUsers);
         return searchView;
     }

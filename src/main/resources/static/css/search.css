@@ -38,3 +38,7 @@
     padding-left: 1rem;
     padding-top: 0.5rem;
 }
+
+.search_no_results_text {
+    text-align: center;
+}
