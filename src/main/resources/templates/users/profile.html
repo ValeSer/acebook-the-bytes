@@ -32,16 +32,12 @@
 <!-- Profile Page Content -->
 <div class="profile-container">
   <!-- Profile Header -->
-  <div class="profile-header">
-    <!-- Profile Picture -->
-<!--    <div class="profile-photo">-->
-<!--      <img th:src="${user.profilePhotoUrl != null ? user.profilePhotoUrl : '/images/default-profile.png'}"-->
-<!--           th:alt="'Profile photo of ' + ${user.firstName} + ' ' + ${user.lastName}" width="150" height="150" />-->
-<!--    </div>-->
-    <!-- User Info -->
-    <div class="profile-info">
+
+      <img th:src="${user.profilePhotoUrl != null ? user.profilePhotoUrl : '/images/profile.png'}"
+           th:alt="'Profile photo of ' + ${user.firstName} + ' ' + ${user.lastName}" width="150" height="150" />
+
       <h1 th:text="${user.firstName} + ' ' + ${user.lastName}">User Full Name</h1>
-      <p th:text="'@' + ${user.username}">@username</p>
+      <p th:text="${user.username}">@username</p>
       <p><strong>Status:</strong>
         <span th:text="${user.myStatus != null ? user.myStatus : 'No status set'}">No status set</span>
       </p>
