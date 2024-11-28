@@ -59,10 +59,6 @@ public class UserService {
         }
         return userRepository.searchByName(query);
     }
-
-//    public Iterable<Post> getPostsInDateOrder() {
-//        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-//    }
 }
 
 
