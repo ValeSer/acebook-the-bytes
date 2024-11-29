@@ -34,6 +34,8 @@ public class PostsController {
     @GetMapping("/posts")
     public String index(Model model) {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
+        User user = userService.getUserProfile();
+        model.addAttribute("currentUserId", user.getId());
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());
