@@ -53,7 +53,7 @@ public class PostsController {
         return new RedirectView("/posts");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/post/{id}")
     public RedirectView deletePost(@PathVariable Long id) {
         Optional<Post> post = repository.findById(id);
         String username = userService.getAuthenticatedUserEmail();
