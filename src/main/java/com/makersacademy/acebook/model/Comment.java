@@ -13,65 +13,53 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")  // This joins the user who made the comment
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "post_id")  // This joins the post the comment belongs to
-    private Post post;
-
+    private Long postId;
+    private Long commenterId;
     private LocalDateTime createdAt;
 
     // Default constructor
     public Comment() {}
 
     // Constructor for creating comment with content, user and post
-    public Comment(String content, User user, Post post, LocalDateTime createdAt) {
+    public Comment(String content, Long postId, Long commenterId, LocalDateTime createdAt) {
         this.content = content;
-        this.user = user;
-        this.post = post;
+        this.postId = postId;
+        this.commenterId = commenterId;
         this.createdAt = createdAt;
     }
 
     // Getters and Setters
     public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        return this.id;
     }
 
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUser() {
+        return this.commenterId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Long commenterId) {
+        this.commenterId = commenterId;
     }
 
-    public Post getPost() {
-        return post;
+    public Long getPost() {
+        return this.postId;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setPost(Long postId) {
+        this.postId = postId;
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
