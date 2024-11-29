@@ -14,10 +14,10 @@
 </head>
 <body>
   <div th:insert="fragments/nav :: navigation"></div>
-  <h1 class="search_header">Search Results</h1>
+  <h1 class="page_header search_header">Search Results</h1>
 
-  <div class="search_results_container">
-    <div th:each="user: ${users}" class="search_results_card">
+  <div class="results-container search_results_container">
+    <div th:each="user: ${users}" class="card search_results_card">
       <div>
         <p th:text="${user.username}"></p>
         <!-- Hardcoded - to be replaced later -->

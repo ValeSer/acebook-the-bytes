@@ -38,6 +38,28 @@ a {
     align-items: center;
 }
 
+.card {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: var(--default-box-shadow);
+    padding: 0 2rem;
+}
+
+.page_header {
+    text-align: center;
+    color: var(--acebook-blue);
+    font-size: 3rem;
+    margin-top: 3rem;
+}
+
+.results-container {
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+
 .clickable:hover {
     cursor: pointer;
 }
