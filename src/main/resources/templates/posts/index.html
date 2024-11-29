@@ -36,6 +36,9 @@
                     <form action="#" th:action="@{/post/{id}/postlike(id=${post.id})}" th:object="${postLike}" method="post">
                         <input type="submit" value="Like"/>
                     </form>
+                    <form th:if="${post.userId == currentUserId}" action="#" th:action="@{/post/{id}(id=${post.id})}" th:method="delete">
+                        <input type="submit" value="Delete"/>
+                    </form>
                 </div>
             </div>
         </div>
