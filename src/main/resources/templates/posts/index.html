@@ -45,6 +45,9 @@
                     </form>
                     <div th:each="postComment: ${postComments[post.Id]}">
                         <p th:text="${postComment.content}"></p>
+                        <form th:if="${postComment.commenterId == currentUserId}" action="#" th:action="@{/comment/{id}(id=${postComment.id})}" th:method="delete">
+                            <input type="submit" value="Delete Comment"/>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -42,19 +42,19 @@ public class Comment {
         this.content = content;
     }
 
-    public Long getUser() {
+    public Long getCommenterId() {
         return this.commenterId;
     }
 
-    public void setUser(Long commenterId) {
+    public void setCommenterId(Long commenterId) {
         this.commenterId = commenterId;
     }
 
-    public Long getPost() {
+    public Long getPostId() {
         return this.postId;
     }
 
-    public void setPost(Long postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 

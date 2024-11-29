@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 public class CommentsController {
@@ -45,14 +46,29 @@ public class CommentsController {
         // Create the comment
         Comment comment = new Comment();
         comment.setContent(content);
-        comment.setPost(postId);
-        comment.setUser(userId);
+        comment.setPostId(postId);
+        comment.setCommenterId(userId);
         comment.setCreatedAt(LocalDateTime.now());
 
         // Save the comment to the repository
         commentRepository.save(comment);
 
         return new RedirectView("/posts");  // Redirect to the post's page after comment is created
+    }
+
+    @DeleteMapping("/comment/{id}")
+    public RedirectView deleteComment(@PathVariable Long id) {
+        Optional<Comment> comment = commentRepository.findById(id);
+        String username = userService.getAuthenticatedUserEmail();
+        User userDetails = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Long userId = userDetails.getId();
+        if (comment.isPresent() && comment.get().getCommenterId().equals(userId)) {
+            commentRepository.deleteById(id);
+            return new RedirectView("/posts"); // Redirect to the posts page
+        } else {
+            throw new RuntimeException("Post not deleted");
+        }
     }
 
 //    // Update a comment
