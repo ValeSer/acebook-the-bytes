@@ -33,11 +33,6 @@ public class PostsController {
     public String index(Model model) {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
         model.addAttribute("posts", posts);
-        System.out.println("--------------------START-------------------");
-        for(Post post: posts) {
-            System.out.println(post);
-        }
-        System.out.println("--------------------END-------------------");
         model.addAttribute("post", new Post());
         return "posts/index";
     }
