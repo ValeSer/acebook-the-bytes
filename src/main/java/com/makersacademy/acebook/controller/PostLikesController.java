@@ -27,13 +27,6 @@ public class PostLikesController {
     @Autowired
     PostLikeRepository postLikeRepository;
 
-//    @GetMapping("/postlikes")
-//    public ModelAndView getLikes(){
-//        ModelAndView likesView = new ModelAndView("posts/postlike");
-//        Iterable<PostLike> postLikes = postLikeRepository.findAll();
-//        likesView.addObject("postLikes", postLikes);
-//        return likesView;
-//    }
 
     @PostMapping("/post/{id}/postlike")
     public RedirectView createPostLike(@PathVariable Long id){
