@@ -1,5 +1,6 @@
 package com.makersacademy.acebook.controller;
 
+import com.makersacademy.acebook.model.Comment;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.model.UserService;
@@ -35,6 +36,7 @@ public class PostsController {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
+        model.addAttribute("comment", new Comment());
         return "posts/index";
     }
 
