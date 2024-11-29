@@ -48,6 +48,9 @@
                         <form th:if="${postComment.commenterId == currentUserId}" action="#" th:action="@{/comment/{id}(id=${postComment.id})}" th:method="delete">
                             <input type="submit" value="Delete Comment"/>
                         </form>
+                        <form action="#" th:action="@{/comment/{id}/commentlike(id=${postComment.id})}" th:object="${commentLike}" method="post">
+                            <input type="submit" value="LikeComment"/>
+                        </form>
                     </div>
                 </div>
             </div>
