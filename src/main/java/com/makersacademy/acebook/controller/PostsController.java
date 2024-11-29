@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PostsController {
@@ -33,6 +34,8 @@ public class PostsController {
     @GetMapping("/posts")
     public String index(Model model) {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
+        User user = userService.getUserProfile();
+        model.addAttribute("currentUserId", user.getId());
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());
@@ -52,5 +55,20 @@ public class PostsController {
         post.setCreatedAt(LocalDateTime.now());
         repository.save(post);
         return new RedirectView("/posts");
+    }
+
+    @DeleteMapping("/post/{id}")
+    public RedirectView deletePost(@PathVariable Long id) {
+        Optional<Post> post = repository.findById(id);
+        String username = userService.getAuthenticatedUserEmail();
+        User userDetails = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Long userId = userDetails.getId();
+        if (post.isPresent() && post.get().getUserId().equals(userId)) {
+            repository.deleteById(id);
+            return new RedirectView("/posts"); // Redirect to the posts page
+        } else {
+            throw new RuntimeException("Post not deleted");
+        }
     }
 }
