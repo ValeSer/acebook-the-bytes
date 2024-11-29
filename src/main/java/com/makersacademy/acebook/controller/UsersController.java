@@ -6,6 +6,8 @@ import com.makersacademy.acebook.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -48,6 +50,16 @@ public class UsersController {
         return "redirect:/profile";
     }
 
+    @PostMapping("/uploadProfilePic")
+    public ResponseEntity<String> uploadProfilePicture(@RequestParam String profilePhotoUrl) {
+        try {
+            userService.updateProfilePictureFromUrl(profilePhotoUrl);
+            return ResponseEntity.ok("Profile picture updated successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error uploading profile picture: " + e.getMessage());
+        }
+    }
 
 
     @GetMapping("/users/after-login")
