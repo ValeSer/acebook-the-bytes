@@ -39,6 +39,10 @@
                     <form th:if="${post.userId == currentUserId}" action="#" th:action="@{/post/{id}(id=${post.id})}" th:method="delete">
                         <input type="submit" value="Delete"/>
                     </form>
+                    <form action="#" th:action="@{/posts/{id}/comments/new(id=${post.id})}" th:object="${comment}" method="post">
+                        <p>Content: <input id="comment" type="text" th:field="*{content}" /></p>
+                        <input type="submit"/>
+                    </form>
                     <div th:each="postComment: ${postComments[post.Id]}">
                         <p th:text="${postComment.content}"></p>
                     </div>
