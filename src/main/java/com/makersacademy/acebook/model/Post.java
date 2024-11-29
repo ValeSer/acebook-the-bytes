@@ -69,4 +69,8 @@ public class Post {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+    public Long getId(){
+        return this.id;
+    }
 }
+
