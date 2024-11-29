@@ -42,6 +42,7 @@ public class PostsController {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
 
         Map<Long, Iterable<Comment>> postCommentMap = new HashMap<>();
+        Map<Long, User> postUserMap = new HashMap<>();
 
         User user = userService.getUserProfile();
         model.addAttribute("currentUserId", user.getId());
@@ -50,6 +51,10 @@ public class PostsController {
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());
         for (Post post: posts) {
+            Optional<User> postUser = userRepository.findById(post.getUserId());
+            if (postUser.isPresent()) {
+                postUserMap.put(post.getUserId(), postUser.get());
+            }
             Iterable<Comment> comments = commentsService.getCommentsByPostId(post.getId());
             postCommentMap.put(post.getId(),comments);
         }
