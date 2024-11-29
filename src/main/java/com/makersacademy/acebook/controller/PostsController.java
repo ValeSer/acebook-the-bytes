@@ -6,6 +6,7 @@ import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.model.UserService;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.service.CommentsService;
 import com.makersacademy.acebook.service.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PostsController {
@@ -30,12 +33,21 @@ public class PostsController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CommentsService commentsService;
+
     @GetMapping("/posts")
     public String index(Model model) {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
+        Map<Long, Iterable<Comment>> postCommentMap = new HashMap<>();
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());
+        for (Post post: posts) {
+            Iterable<Comment> comments = commentsService.getCommentsByPostId(post.getId());
+            postCommentMap.put(post.getId(),comments);
+        }
+        model.addAttribute("postComments", postCommentMap);
         return "posts/index";
     }
 
