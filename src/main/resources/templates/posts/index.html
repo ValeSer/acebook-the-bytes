@@ -33,6 +33,9 @@
 <!--                    <p th:text="${post.photo_url}"></p>-->
                     <p th:text="${post.content}"></p>
                     <p th:text="${post.createdAt}"></p>
+                    <form action="#" th:action="@{/post/{id}/postlike(id=${post.id})}" th:object="${postLike}" method="post">
+                        <input type="submit" value="Like"/>
+                    </form>
                 </div>
             </div>
         </div>
