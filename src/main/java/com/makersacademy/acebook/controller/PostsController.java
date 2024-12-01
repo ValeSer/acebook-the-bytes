@@ -45,6 +45,7 @@ public class PostsController {
 
         User user = userService.getUserProfile();
         model.addAttribute("currentUserId", user.getId());
+        model.addAttribute("currentUser", user);
 
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());

@@ -1,0 +1,26 @@
+<div th:fragment="newPost" xmlns:th="http://www.thymeleaf.org">
+    <div class="new_post_backdrop backdrop hidden"></div>
+    <div class="new_post_modal modal hidden">
+        <div class="new_post_modal_container">
+            <h2 class="new_post_modal_header">Create Post</h2>
+            <a><i class="fa-regular fa-circle-xmark modal_close_btn new_post_modal_close clickable"></i></a>
+            <hr class="new_post_modal_line">
+            <div>
+                <div class="new_post_modal_user_details">
+                    <img th:src="${currentUser.profilePhotoUrl}" class="new_post_modal_img" />
+                    <div th:text="${currentUser.firstName + ' ' + currentUser.lastName}"></div>
+                </div>
+            </div>
+            <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
+                <div class="new_post_modal_content_container">
+                    <textarea id="modalContent" th:field="*{content}" placeholder="What's on your mind?" class="new_post_modal_content"></textarea>
+                </div>
+                <div class="new_post_modal_add_photo">
+                    <input id="modalPhotoUrl" type="text" th:field="*{photoUrl}" placeholder="Add to your post..." class="new_post_modal_add_photo" />
+                    <i class="fa-solid fa-camera new_post_modal_camera_icon clickable"></i>
+                </div>
+                <input type="submit" value="Post" class="blue_btn clickable" id="new_post_modal_submit" />
+            </form>
+        </div>
+    </div>
+</div>
