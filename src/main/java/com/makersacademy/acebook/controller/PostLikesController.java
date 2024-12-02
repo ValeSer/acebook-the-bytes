@@ -34,8 +34,7 @@ public class PostLikesController {
     @Autowired
     PostLikesService postLikesService;
 
-
-    @PostMapping("/post/{id}/postlike")
+    @PostMapping("/post/{id}/like")
     public ResponseEntity<Void> createPostLike(@PathVariable Long id){
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
@@ -52,7 +51,7 @@ public class PostLikesController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/post/{id}/postunlike")
+    @DeleteMapping("/post/{id}/unlike")
     public ResponseEntity<Void> deletePostLike(@PathVariable Long id){
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)

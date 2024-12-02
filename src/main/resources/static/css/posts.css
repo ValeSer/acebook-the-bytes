@@ -2,7 +2,7 @@
     max-width: 32rem;
 }
 
-.post_like_button {
+.post_like_button, .comment_like_button {
     all: unset;
     color: var(--acebook-blue);
 }

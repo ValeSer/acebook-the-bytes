@@ -21,7 +21,13 @@
         <div class="results-container posts_container">
             <div th:each="post: ${posts}" class="card post_card">
                 <div>
-<!--                    <p th:text="${post.user_id}"></p>-->
+                    <p th:text="${#strings.capitalize(postUserMap[post.userId].firstName) + ' ' + #strings.capitalize(postUserMap[post.userId].lastName)}"></p>
+                    <img
+                            th:src="${postUserMap[post.userId].profilePhotoUrl}"
+                            th:alt="'Profile photo of ' + ${postUserMap[post.userId].firstName} + ' ' + ${postUserMap[post.userId].lastName}"
+                            width="100"
+                            height="100"
+                    />
                     <p th:text="${post.content}"></p>
                     <p th:text="${post.createdAt}"></p>
                     <th:block th:if="${post.photoUrl != null}">
@@ -29,12 +35,12 @@
                     </th:block>
 
                     <div>
-                        <button class="post_like_button clickable"
+                        <button class="post_like_button like_button clickable"
                                 th:data-post-id="${post.id}"
                                 th:data-liked="${likedPosts[post.id]}">
                             <i class="fa" th:class="${likedPosts[post.id]} ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
                         </button>
-                        <div th:text="${postLikes[post.Id].size()}" th:id="'like_count_' + ${post.id}" class="post_like_count"></div>
+                        <div th:text="${postLikes[post.id].size()}" th:id="'post_like_count_' + ${post.id}" class="post_like_count like_count"></div>
                     </div>
 
                     <form th:if="${post.userId == currentUserId}" action="#" th:action="@{/post/{id}(id=${post.id})}" th:method="delete">
@@ -44,14 +50,21 @@
                         <p>Content: <input id="comment" type="text" th:field="*{content}" /></p>
                         <input type="submit"/>
                     </form>
-                    <div th:each="postComment: ${postComments[post.Id]}">
+                    <div th:each="postComment: ${postComments[post.id]}">
                         <p th:text="${postComment.content}"></p>
                         <form th:if="${postComment.commenterId == currentUserId}" action="#" th:action="@{/comment/{id}(id=${postComment.id})}" th:method="delete">
                             <input type="submit" value="Delete Comment"/>
                         </form>
-                        <form action="#" th:action="@{/comment/{id}/commentlike(id=${postComment.id})}" th:object="${commentLike}" method="post">
-                            <input type="submit" value="LikeComment"/>
-                        </form>
+
+                        <div>
+                            <button class="comment_like_button like_button clickable"
+                                    th:data-comment-id="${postComment.id}"
+                                    th:data-comment-liked="${likedComments[postComment.id]}">
+                                <i class="fa" th:class="${likedComments[postComment.id]} ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
+                            </button>
+                            <div th:text="${commentLikes[postComment.id].size()}" th:id="'comment_like_count_' + ${postComment.id}" class="comment_like_count like_count"></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
