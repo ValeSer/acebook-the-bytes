@@ -31,16 +31,6 @@ public class CommentLikesController {
 
     @PostMapping("/comment/{id}/like")
     public ResponseEntity<Void> createCommentLike(@PathVariable Long id){
-//        CommentLike commentLike = new CommentLike();
-//        String username = userService.getAuthenticatedUserEmail();
-//        User userDetails = userRepository.findUserByUsername(username)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//        Long userId = userDetails.getId();
-//        commentLike.setUserId(userId);
-//        commentLike.setCreatedAt(LocalDateTime.now());
-//        commentLike.setCommentId(id);
-//        commentLikeRepository.save(commentLike);
-//        return new RedirectView("/posts");
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
