@@ -28,7 +28,7 @@ public class Notification {
     public Notification() {}
 
     public Long getSenderId() {
-        return this.senderId
+        return this.senderId;
     }
 
 //    public Long getUserId(){

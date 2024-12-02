@@ -91,7 +91,6 @@ public class PostsController {
 
         model.addAttribute("postComments", postCommentMap);
         model.addAttribute("postLikes", postLikeMap);
-        model.addAttribute("likedPosts", likedPostsMap);
         model.addAttribute("postUserMap", postUserMap);
         model.addAttribute("likedPosts", userLikedPostsMap);
         model.addAttribute("commentLikes", commentLikeMap);
