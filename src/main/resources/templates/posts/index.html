@@ -21,8 +21,13 @@
         <div class="results-container posts_container">
             <div th:each="post: ${posts}" class="card post_card">
                 <div>
-<!--                    <p th:text="${post.user_id}"></p>-->
-<!--                    <p th:text="${post.photo_url}"></p>-->
+                    <p th:text="${#strings.capitalize(postUserMap[post.userId].firstName) + ' ' + #strings.capitalize(postUserMap[post.userId].lastName)}"></p>
+                    <img
+                            th:src="${postUserMap[post.userId].profilePhotoUrl}"
+                            th:alt="'Profile photo of ' + ${postUserMap[post.userId].firstName} + ' ' + ${postUserMap[post.userId].lastName}"
+                            width="100"
+                            height="100"
+                    />
                     <p th:text="${post.content}"></p>
                     <p th:text="${post.createdAt}"></p>
 

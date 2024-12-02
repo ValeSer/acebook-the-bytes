@@ -46,6 +46,7 @@ public class PostsController {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
 
         Map<Long, Iterable<Comment>> postCommentMap = new HashMap<>();
+        Map<Long, User> postUserMap = new HashMap<>();
         Map<Long, Iterable<PostLike>> postLikeMap = new HashMap<>();
         Map<Long, Boolean> userLikedPostsMap = new HashMap<>();
         Map<Long, Iterable<CommentLike>> commentLikeMap = new HashMap<>();
@@ -60,6 +61,11 @@ public class PostsController {
         model.addAttribute("comment", new Comment());
 
         for (Post post: posts) {
+            Optional<User> postUser = userRepository.findById(post.getUserId());
+            if (postUser.isPresent()) {
+                postUserMap.put(post.getUserId(), postUser.get());
+            }
+
             // Get all likes for each post
             Iterable<PostLike> postLikes = postLikesService.getLikesByPostId(post.getId());
             postLikeMap.put(post.getId(), postLikes);
@@ -85,6 +91,8 @@ public class PostsController {
 
         model.addAttribute("postComments", postCommentMap);
         model.addAttribute("postLikes", postLikeMap);
+        model.addAttribute("likedPosts", likedPostsMap);
+        model.addAttribute("postUserMap", postUserMap);
         model.addAttribute("likedPosts", userLikedPostsMap);
         model.addAttribute("commentLikes", commentLikeMap);
         model.addAttribute("likedComments", userLikedCommentsMap);
