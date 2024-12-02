@@ -10,7 +10,7 @@ import static java.lang.Boolean.TRUE;
 
 @Data
 @Entity
-@Table(name = "notifications")
+@Table(name = "NOTIFICATIONS")
 public class Notification {
 
     @Getter
@@ -30,14 +30,5 @@ public class Notification {
     public Long getSenderId() {
         return this.senderId;
     }
-
-//    public Long getUserId(){
-//        return this.userId;
-//    }
-//
-//    public void setUserId(Long userId){
-//        this.userId = userId;
-//    }
-
 
 }
