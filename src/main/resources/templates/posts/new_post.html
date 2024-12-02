@@ -11,7 +11,7 @@
                     <div th:text="${currentUser.firstName + ' ' + currentUser.lastName}"></div>
                 </div>
             </div>
-            <form action="#" th:action="@{/posts}" th:object="${post}" method="post" enctype="multipart/form-data">
+            <form action="#" th:action="@{/posts}" th:object="${post}" method="post" enctype="multipart/form-data" id="new_post_form">
                 <div class="new_post_modal_content_container">
                     <textarea id="modalContent" th:field="*{content}" placeholder="What's on your mind?" class="new_post_modal_content"></textarea>
                 </div>

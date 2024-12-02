@@ -29,13 +29,10 @@ public class CloudinaryService {
     public String uploadImage(MultipartFile photo) {
         try {
             BufferedImage originalImage = ImageIO.read(photo.getInputStream());
-
             BufferedImage resizedImage = Scalr.resize(originalImage, Scalr.Method.QUALITY, 800, 800);
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(resizedImage, "jpg", baos);
             baos.flush();
-
             byte[] compressedImageBytes = baos.toByteArray();
             baos.close();
 
