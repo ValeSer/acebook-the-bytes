@@ -23,6 +23,8 @@ public class PostLike {
         this.createdAt = createdAt;
     }
 
+    public Long getId() { return this.id; };
+
     public Long getUserId(){
         return this.userId;
     }

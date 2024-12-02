@@ -1,3 +1,8 @@
 .posts_container {
     max-width: 32rem;
 }
+
+.post_like_button {
+    all: unset;
+    color: var(--acebook-blue);
+}

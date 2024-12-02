@@ -1,12 +1,10 @@
 package com.makersacademy.acebook.controller;
 
-import com.makersacademy.acebook.model.Comment;
-import com.makersacademy.acebook.model.Post;
-import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.model.UserService;
+import com.makersacademy.acebook.model.*;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import com.makersacademy.acebook.service.CommentsService;
+import com.makersacademy.acebook.service.PostLikesService;
 import com.makersacademy.acebook.service.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,11 +34,16 @@ public class PostsController {
     @Autowired
     CommentsService commentsService;
 
+    @Autowired
+    PostLikesService postLikesService;
+
     @GetMapping("/posts")
     public String index(Model model) {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
 
         Map<Long, Iterable<Comment>> postCommentMap = new HashMap<>();
+        Map<Long, Iterable<PostLike>> postLikeMap = new HashMap<>();
+        Map<Long, Boolean> likedPostsMap = new HashMap<>();
 
         User user = userService.getUserProfile();
         model.addAttribute("currentUserId", user.getId());
@@ -51,10 +53,23 @@ public class PostsController {
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());
         for (Post post: posts) {
+            Iterable<PostLike> postLikes = postLikesService.getLikesByPostId(post.getId());
+            postLikeMap.put(post.getId(), postLikes);
             Iterable<Comment> comments = commentsService.getCommentsByPostId(post.getId());
-            postCommentMap.put(post.getId(),comments);
+            postCommentMap.put(post.getId(), comments);
+
+            boolean isLiked = false;
+            for (PostLike postLike : postLikes) {
+                if (postLike.getUserId().equals(user.getId())) {
+                    isLiked = true;
+                    break;
+                }
+            }
+            likedPostsMap.put(post.getId(), isLiked);
         }
         model.addAttribute("postComments", postCommentMap);
+        model.addAttribute("postLikes", postLikeMap);
+        model.addAttribute("likedPosts", likedPostsMap);
         return "posts/index";
     }
 
