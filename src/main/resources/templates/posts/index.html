@@ -11,6 +11,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <script src="/js/main.js" defer></script>
     </head>
     <body>
         <div th:insert="fragments/nav :: navigation"></div>
@@ -33,9 +34,16 @@
 <!--                    <p th:text="${post.photo_url}"></p>-->
                     <p th:text="${post.content}"></p>
                     <p th:text="${post.createdAt}"></p>
-                    <form action="#" th:action="@{/post/{id}/postlike(id=${post.id})}" th:object="${postLike}" method="post">
-                        <input type="submit" value="Like"/>
-                    </form>
+
+                    <div>
+                        <button class="post_like_button clickable"
+                                th:data-post-id="${post.id}"
+                                th:data-liked="${likedPosts[post.id]}">
+                            <i class="fa" th:class="${likedPosts[post.id]} ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
+                        </button>
+                        <div th:text="${postLikes[post.Id].size()}" th:id="'like_count_' + ${post.id}" class="post_like_count"></div>
+                    </div>
+
                     <form th:if="${post.userId == currentUserId}" action="#" th:action="@{/post/{id}(id=${post.id})}" th:method="delete">
                         <input type="submit" value="Delete"/>
                     </form>
@@ -55,6 +63,5 @@
                 </div>
             </div>
         </div>
-
     </body>
 </html>
