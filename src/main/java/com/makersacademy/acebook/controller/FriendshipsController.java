@@ -7,6 +7,7 @@ import com.makersacademy.acebook.repository.FriendshipRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,17 @@ public class FriendshipsController {
     @Autowired
     UserRepository userRepository;
 
+
+    @GetMapping("/friends")
+    public String friendRequests(Model model) {
+        String username = userService.getAuthenticatedUserEmail();
+        User userDetails = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Long userId = userDetails.getId();
+        Iterable<Friendship> friendRequests = friendshipRepository.findByReceiverIdAndStatus(userId, "pending");
+        model.addAttribute("friendRequests", friendRequests);
+        return "friends/index";
+    }
 
 
     @PostMapping("/search")
