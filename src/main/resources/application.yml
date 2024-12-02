@@ -3,3 +3,12 @@ okta:
     issuer: ${OKTA_ISSUER}
     client-id: ${OKTA_CLIENT_ID}
     client-secret: ${OKTA_CLIENT_SECRET}
+cloudinary:
+  cloud_name: ${CLOUDINARY_CLOUD_NAME}
+  api_key: ${CLOUDINARY_API_KEY}
+  api_secret: ${CLOUDINARY_API_SECRET}
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

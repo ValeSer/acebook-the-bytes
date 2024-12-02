@@ -3,6 +3,7 @@ package com.makersacademy.acebook.controller;
 import com.makersacademy.acebook.model.*;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.service.CloudinaryService;
 import com.makersacademy.acebook.service.CommentLikesService;
 import com.makersacademy.acebook.service.CommentsService;
 import com.makersacademy.acebook.service.PostLikesService;
@@ -11,8 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
+import org.imgscalr.Scalr;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +44,9 @@ public class PostsController {
     @Autowired
     PostLikesService postLikesService;
 
+    @Autowired
+    CloudinaryService cloudinaryService;
+  
     @Autowired
     CommentLikesService commentLikesService;
 
@@ -100,9 +109,19 @@ public class PostsController {
     }
 
     @PostMapping("/posts")
-    public RedirectView create(@RequestParam String content, @RequestParam String photoUrl) {
+    public RedirectView create(@RequestParam String content, @RequestParam(value = "post_photo", required = false) MultipartFile photo) {
         Post post = new Post();
         post.setContent(content);
+
+        String photoUrl = null;
+        if(photo != null && !photo.isEmpty()){
+            try {
+                photoUrl = cloudinaryService.uploadImage(photo);
+                post.setPhotoUrl(photoUrl);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
         post.setPhotoUrl(photoUrl);
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
@@ -110,6 +129,7 @@ public class PostsController {
         Long id = userDetails.getId();
         post.setUserId(id);
         post.setCreatedAt(LocalDateTime.now());
+
         repository.save(post);
         return new RedirectView("/posts");
     }
