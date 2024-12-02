@@ -6,24 +6,27 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "POST_LIKES")
-public class PostLike {
+@Table(name = "COMMENT_LIKES")
+
+public class CommentLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
-    private Long postId;
+    private Long commentId;
     private LocalDateTime createdAt;
 
-    public PostLike() {}
+    public CommentLike() {}
 
-    public PostLike(Long userId, Long postId, LocalDateTime createdAt){
+    public CommentLike(Long userId, Long commentId, LocalDateTime createdAt) {
         this.userId = userId;
-        this.postId = postId;
+        this.commentId = commentId;
         this.createdAt = createdAt;
     }
 
-    public Long getId() { return this.id; };
+    public Long getId(){
+        return this.id;
+    }
 
     public Long getUserId(){
         return this.userId;
@@ -33,12 +36,12 @@ public class PostLike {
         this.userId = userId;
     }
 
-    public Long getPostId(){
-        return this.postId;
+    public Long getCommentId(){
+        return this.commentId;
     }
 
-    public void setPostId(Long postId){
-        this.postId = postId;
+    public void setCommentId(Long commentId){
+        this.commentId = commentId;
     }
 
     public LocalDateTime getCreatedAt(){
@@ -48,5 +51,6 @@ public class PostLike {
     public void setCreatedAt(LocalDateTime createdAt){
         this.createdAt = createdAt;
     }
+
 
 }
