@@ -21,7 +21,7 @@
         <div class="results-container posts_container">
             <div th:each="post: ${posts}" class="card post_card">
                 <div>
-<!--                    <p th:text="${post.user_id}"></p>-->
+                    <p th:text="${postUserMap[post.userId].firstName + ' ' + postUserMap[post.userId].lastName}"></p>
 <!--                    <p th:text="${post.photo_url}"></p>-->
                     <p th:text="${post.content}"></p>
                     <p th:text="${post.createdAt}"></p>

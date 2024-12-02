@@ -53,6 +53,7 @@ public class PostsController {
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());
+
         for (Post post: posts) {
             Optional<User> postUser = userRepository.findById(post.getUserId());
             if (postUser.isPresent()) {
@@ -76,6 +77,7 @@ public class PostsController {
         model.addAttribute("postComments", postCommentMap);
         model.addAttribute("postLikes", postLikeMap);
         model.addAttribute("likedPosts", likedPostsMap);
+        model.addAttribute("postUserMap", postUserMap);
         return "posts/index";
     }
 
