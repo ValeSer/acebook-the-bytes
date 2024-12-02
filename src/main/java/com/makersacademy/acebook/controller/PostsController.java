@@ -3,6 +3,7 @@ package com.makersacademy.acebook.controller;
 import com.makersacademy.acebook.model.*;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.service.CommentLikesService;
 import com.makersacademy.acebook.service.CommentsService;
 import com.makersacademy.acebook.service.PostLikesService;
 import com.makersacademy.acebook.service.PostsService;
@@ -37,13 +38,18 @@ public class PostsController {
     @Autowired
     PostLikesService postLikesService;
 
+    @Autowired
+    CommentLikesService commentLikesService;
+
     @GetMapping("/posts")
     public String index(Model model) {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
 
         Map<Long, Iterable<Comment>> postCommentMap = new HashMap<>();
         Map<Long, Iterable<PostLike>> postLikeMap = new HashMap<>();
-        Map<Long, Boolean> likedPostsMap = new HashMap<>();
+        Map<Long, Boolean> userLikedPostsMap = new HashMap<>();
+        Map<Long, Iterable<CommentLike>> commentLikeMap = new HashMap<>();
+        Map<Long, Boolean> userLikedCommentsMap = new HashMap<>();
 
         User user = userService.getUserProfile();
         model.addAttribute("currentUserId", user.getId());
@@ -52,24 +58,37 @@ public class PostsController {
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());
+
         for (Post post: posts) {
+            // Get all likes for each post
             Iterable<PostLike> postLikes = postLikesService.getLikesByPostId(post.getId());
             postLikeMap.put(post.getId(), postLikes);
+
+            // Get all comments for each post
             Iterable<Comment> comments = commentsService.getCommentsByPostId(post.getId());
             postCommentMap.put(post.getId(), comments);
 
-            boolean isLiked = false;
-            for (PostLike postLike : postLikes) {
-                if (postLike.getUserId().equals(user.getId())) {
-                    isLiked = true;
-                    break;
-                }
+            // Get whether post has been liked by logged in user
+            boolean postIsLikedByUser = postLikesService.userHasLikedPost(post.getId(), user.getId());
+            userLikedPostsMap.put(post.getId(), postIsLikedByUser);
+
+            // Get likes for all comments for each post
+            for (Comment comment: comments) {
+                Iterable<CommentLike> commentLikes = commentLikesService.getLikesByCommentId(comment.getId());
+                commentLikeMap.put(comment.getId(), commentLikes);
+
+                // Get whether comment has been liked by logged in user
+                boolean commentIsLikedByUser = commentLikesService.userHasLikedComment(comment.getId(), user.getId());
+                userLikedCommentsMap.put(comment.getId(), commentIsLikedByUser);
             }
-            likedPostsMap.put(post.getId(), isLiked);
         }
+
         model.addAttribute("postComments", postCommentMap);
         model.addAttribute("postLikes", postLikeMap);
-        model.addAttribute("likedPosts", likedPostsMap);
+        model.addAttribute("likedPosts", userLikedPostsMap);
+        model.addAttribute("commentLikes", commentLikeMap);
+        model.addAttribute("likedComments", userLikedCommentsMap);
+
         return "posts/index";
     }
 
