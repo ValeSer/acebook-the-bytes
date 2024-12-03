@@ -48,8 +48,8 @@ public class FriendshipsController {
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Long userId = userDetails.getId();
-
         Friendship existingFriendship = friendshipRepository.findBySenderIdAndReceiverId(userId, receiverId);
+        // send the notification
         if (existingFriendship != null) {
             friendshipRepository.delete(existingFriendship);
         } else {
@@ -59,6 +59,7 @@ public class FriendshipsController {
             friendshipRequest.setReceiverId(receiverId);
             friendshipRequest.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendshipRequest);
+            // send the notification
         }
             return new RedirectView("/search");
     }

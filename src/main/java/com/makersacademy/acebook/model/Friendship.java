@@ -1,5 +1,7 @@
 package com.makersacademy.acebook.model;
 import java.time.LocalDateTime;
+
+import com.makersacademy.acebook.listener.NotificationListener;
 import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
@@ -7,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
+@EntityListeners(NotificationListener.class)
 @Table(name = "FRIENDSHIPS")
 public class Friendship {
     @Id
