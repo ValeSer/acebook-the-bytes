@@ -2,6 +2,10 @@
     max-width: 32rem;
 }
 
+.post-container {
+    margin-top: 4rem;
+}
+
 .post_card {
     position: relative;
 }

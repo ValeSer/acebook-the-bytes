@@ -36,9 +36,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 let currentLikeCount = parseInt(likeCountElement.textContent);
                 likeCountElement.textContent = isLiked ? currentLikeCount - 1 : currentLikeCount + 1;
+
+                const storageKey = `${isPost ? 'post' : 'comment'}_${id}_liked`;
+                localStorage.setItem(storageKey, (!isLiked).toString());
             }
         });
     }
+
+    // Sync like status from localStorage when the page loads
+        likeButtons.forEach(button => {
+            const postId = button.dataset.postId;
+            const commentId = button.dataset.commentId;
+            const isPost = !!postId;
+            const id = isPost ? postId : commentId;
+            const storageKey = `${isPost ? 'post' : 'comment'}_${id}_liked`;
+
+            const localLikedStatus = localStorage.getItem(storageKey);
+            if (localLikedStatus !== null) {
+                const isLiked = localLikedStatus === "true";
+                button.dataset.liked = localLikedStatus;
+                const icon = button.querySelector('i');
+                icon.classList.toggle('fa-solid', isLiked);
+                icon.classList.toggle('fa-regular', !isLiked);
+            }
+        });
 });
 
 // Submit comment on post by hitting enter

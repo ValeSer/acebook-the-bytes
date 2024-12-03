@@ -23,4 +23,8 @@ public class PostLikesService {
     public boolean userHasLikedPost(Long postId, Long userId) {
         return postLikeRepository.existsByPostIdAndUserId(postId, userId);
     }
+
+    public long numberOfLikesForPost(Long postId) {
+        return postLikeRepository.countByPostId(postId);
+    }
 }
