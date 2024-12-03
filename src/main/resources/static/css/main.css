@@ -44,7 +44,7 @@ a {
     background-color: white;
     border-radius: 16px;
     box-shadow: var(--default-box-shadow);
-    padding: 0 2rem;
+    padding: 2rem;
 }
 
 .page_header {
@@ -104,6 +104,12 @@ a {
     right: 2rem;
     color: var(--acebook-blue);
     font-size: 2rem;
+}
+
+.hr_line {
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .hidden {

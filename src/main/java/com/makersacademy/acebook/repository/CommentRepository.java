@@ -12,4 +12,16 @@ import java.util.List;
 public interface CommentRepository extends CrudRepository<Comment, Long> {
     @Query(value = "SELECT * FROM comments WHERE post_id= :postId",nativeQuery = true)
     List<Comment> searchByPostId(@Param("postId") Long postId);
+
+    @Query(value = """
+        SELECT
+            comments.*,
+            users.first_name,
+            users.last_name,
+            users.profile_photo_url
+        FROM comments
+        JOIN users ON users.id = comments.commenter_id
+        WHERE comments.post_id = :postId
+    """, nativeQuery = true)
+    List<Object[]> searchAllDetailsByPostId(@Param("postId") Long postId);
 }
