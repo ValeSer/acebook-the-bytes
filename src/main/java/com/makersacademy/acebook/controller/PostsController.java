@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,7 +55,8 @@ public class PostsController {
     public String index(Model model) {
         Iterable<Post> posts = postsService.getPostsInDateOrder();
 
-        Map<Long, Iterable<Comment>> postCommentMap = new HashMap<>();
+//        Map<Long, Iterable<Comment>> postCommentMap = new HashMap<>();
+        Map<Long, List<Map<String, Object>>> postCommentMapWithDetails = new HashMap<>();
         Map<Long, User> postUserMap = new HashMap<>();
         Map<Long, Iterable<PostLike>> postLikeMap = new HashMap<>();
         Map<Long, Boolean> userLikedPostsMap = new HashMap<>();
@@ -81,7 +83,11 @@ public class PostsController {
 
             // Get all comments for each post
             Iterable<Comment> comments = commentsService.getCommentsByPostId(post.getId());
-            postCommentMap.put(post.getId(), comments);
+//            postCommentMap.put(post.getId(), comments);
+
+            // Get all comments for each post with details
+            List<Map<String, Object>> commentsWithDetails = commentsService.getCommentsDetailsByPostId(post.getId());
+            postCommentMapWithDetails.put(post.getId(), commentsWithDetails);
 
             // Get whether post has been liked by logged in user
             boolean postIsLikedByUser = postLikesService.userHasLikedPost(post.getId(), user.getId());
@@ -98,7 +104,8 @@ public class PostsController {
             }
         }
 
-        model.addAttribute("postComments", postCommentMap);
+//        model.addAttribute("postComments", postCommentMap);
+        model.addAttribute("postCommentsDetails", postCommentMapWithDetails);
         model.addAttribute("postLikes", postLikeMap);
         model.addAttribute("postUserMap", postUserMap);
         model.addAttribute("likedPosts", userLikedPostsMap);
