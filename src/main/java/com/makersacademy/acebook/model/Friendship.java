@@ -1,12 +1,14 @@
 package com.makersacademy.acebook.model;
 import java.time.LocalDateTime;
+
+import com.makersacademy.acebook.listener.FriendshipListener;
 import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
+@EntityListeners(FriendshipListener.class)
 @Table(name = "FRIENDSHIPS")
 public class Friendship {
     @Id
