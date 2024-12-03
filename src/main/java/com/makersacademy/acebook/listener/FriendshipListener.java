@@ -2,28 +2,30 @@ package com.makersacademy.acebook.listener;
 import com.makersacademy.acebook.model.Friendship;
 import com.makersacademy.acebook.model.Notification;
 import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.model.UserService;
 import com.makersacademy.acebook.repository.NotificationRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PostPersist;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
+import org.springframework.stereotype.Component;
 //import jakarta.persistence.PreUpdate;
 //import jakarta.persistence.PostUpdate;
 //import jakarta.persistence.PreRemove;
 //import jakarta.persistence.PostRemove;
 
-public class NotificationListener {
-    private final UserRepository userRepository;
-    private final NotificationRepository notificationRepository;
+@Component
+public class FriendshipListener {
 
-    @Autowired
-    public NotificationListener(UserRepository userRepository, NotificationRepository notificationRepository) {
-        this.userRepository = userRepository;
-        this.notificationRepository = notificationRepository;
+
+    private static UserRepository userRepository;
+    private static NotificationRepository notificationRepository;
+
+    public static void setUserRepository(UserRepository userRepository) {
+        FriendshipListener.userRepository = userRepository;
+    }
+
+    public static void setNotificationRepository(NotificationRepository notificationRepository) {
+        FriendshipListener.notificationRepository = notificationRepository;
     }
 
     @PrePersist
@@ -33,28 +35,28 @@ public class NotificationListener {
 
     @PostPersist
     public void afterSave(Friendship friendship) {
-        System.out.println("Friendship sent");
+
         Notification friendshipRequestNotification = new Notification();
         friendshipRequestNotification.setSenderId(friendship.getSenderId());
         friendshipRequestNotification.setReceiverId(friendship.getReceiverId());
         friendshipRequestNotification.setIsRead(Boolean.FALSE);
         friendshipRequestNotification.setFriendshipId(friendship.getId());
-        friendshipRequestNotification.setType("Friendship request");
+        friendshipRequestNotification.setType("friend_request");
 
         User sender = userRepository.findById(friendship.getSenderId())
             .orElseThrow(() -> new RuntimeException("Sender user not found"));
 
         String firstName = sender.getFirstName();
         String lastName = sender.getLastName();
-        System.out.println("################# START #####################");
-        System.out.println(firstName);
-        System.out.println(lastName);
-        System.out.println("################# END ########################");
-        String friendShipNotifyMessage = firstName + " " + lastName + " sent a friendship request";
+        firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+        lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
+
+        String friendShipNotifyMessage = firstName + " " + lastName + " sent you a friendship request";
         friendshipRequestNotification.setContent(friendShipNotifyMessage);
         friendshipRequestNotification.setCreatedAt(friendship.getCreatedAt());
         notificationRepository.save(friendshipRequestNotification);
     }
+
 }
 
 

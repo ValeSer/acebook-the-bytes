@@ -41,7 +41,7 @@ public class FriendshipsController {
         return "friends/index";
     }
 
-
+// /friendship
     @PostMapping("/search")
     public RedirectView toggleFriendshipRequest(@RequestParam Long receiverId){
         String username = userService.getAuthenticatedUserEmail();
