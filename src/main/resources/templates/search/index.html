@@ -17,15 +17,17 @@
   <h1 class="page_header search_header">Search Results</h1>
 
   <div class="results-container search_results_container">
-    <div th:each="user: ${users}" class="card search_results_card">
+    <div th:each="user, iterStat : ${users}" class="card search_results_card">
       <div>
         <p th:text="${user.username}"></p>
         <!-- Hardcoded - to be replaced later -->
         <p class="search_mutual">3 mutual friends</p>
       </div>
-      <!-- Hardcoded as one button type - amend so depends on if already friends -->
-<!--      <div class="clickable white_btn"><a>Message</a></div>-->
-      <div class="clickable blue_btn"><a>Add Friend</a></div>
+      <form action="/search" method="post">
+        <input type="hidden" name="receiverId" th:value="${user.id}" />
+        <button type="submit" class="clickable blue_btn" th:text="${friendshipsExist[iterStat.index] ? 'Remove Friend' : 'Add Friend'}">
+        </button>
+      </form>
     </div>
   </div>
   <div th:if="${users.size() == 0}">
