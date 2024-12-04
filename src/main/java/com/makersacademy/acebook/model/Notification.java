@@ -118,5 +118,6 @@ public class Notification {
     }
 
 
-
+    public void setCommentLikeId(Long id) {
+    }
 }
