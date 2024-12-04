@@ -34,9 +34,17 @@ public class SearchController {
 
         Iterable<User> allUsers = userService.getUsersBySearchTerm(query);
 
-        List<Boolean> friendshipsExist = new ArrayList<>();
+        List<User> filteredUsers = new ArrayList<>();
 
         for (User user : allUsers) {
+            if (!user.getId().equals(userId)) {
+                filteredUsers.add(user);
+            }
+        }
+
+        List<Boolean> friendshipsExist = new ArrayList<>();
+
+        for (User user : filteredUsers) {
             Friendship friendship = friendshipRepository.findBySenderIdAndReceiverId(userId, user.getId());
             if (friendship == null) {
                 friendship = friendshipRepository.findBySenderIdAndReceiverId(user.getId(), userId);
@@ -44,7 +52,7 @@ public class SearchController {
             friendshipsExist.add(friendship != null);
         }
 
-        searchView.addObject("users", allUsers);
+        searchView.addObject("users", filteredUsers);
         searchView.addObject("friendshipsExist", friendshipsExist);
 
         return searchView;
