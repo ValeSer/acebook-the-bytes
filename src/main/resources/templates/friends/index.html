@@ -3,28 +3,42 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
 <head lang="en">
   <meta charset="UTF-8"/>
-  <title>Friend Requests</title>
+  <title>Acebook - Friend Requests</title>
   <link rel="stylesheet" href="/css/main.css" />
-  <link rel="stylesheet" href="/css/posts.css" />
+  <link rel="stylesheet" href="/css/search.css" />
   <link rel="stylesheet" href="/css/nav.css" />
+  <link rel="stylesheet" href="/css/friendRequests.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-  <script src="/js/NewPostModal.js" defer></script>
-  <script src="/js/main.js" defer></script>
 </head>
 <body>
 <div th:insert="fragments/nav :: navigation"></div>
+<h1 class="page_header">Friend Requests</h1>
 
-<!--<div th:each="request : ${friendRequests}" class="card search_results_card">-->
-<!--  <p th:text="${user.username}"></p>-->
-<!--</div>-->
+<div class="results-container">
+  <div th:each="request : ${friendRequests}" class="card friend-request-card">
+    <div>
+      <p class="sender-name" th:text="${request.senderFirstName} + ' ' + ${request.senderLastName}">Sender Name</p>
+      <p class="request-status">Friend request from <span th:text="${request.senderFirstName}">Sender</span></p>
+    </div>
 
+    <div class="friend-request-actions">
+      <form th:action="@{/friends/accept/{id}(id=${request.friendshipId})}" method="post">
+        <button type="submit" class="clickable blue_btn">Accept</button>
+      </form>
 
-
-<div sec:authorize="isAuthenticated()" id="greeting">
-  Signed in as <span sec:authentication="principal.attributes['email']"></span>
+      <form th:action="@{/friends/reject/{id}(id=${request.friendshipId})}" method="post">
+        <button type="submit" class="clickable red_btn">Reject</button>
+      </form>
+    </div>
+  </div>
 </div>
+
+<div th:if="${friendRequests.size() == 0}" class="no-requests-container">
+  <p class="no-requests-text">There are no pending friend requests. Nobody wants to be your friend (Sorry) <span class="emoji">😢</span></p>
+</div>
+
 </body>
 </html>
