@@ -59,7 +59,7 @@ public class FriendshipsController {
     }
 
 
-    @PostMapping("/search")
+    @PostMapping("/friends/new")
     public RedirectView toggleFriendshipRequest(@RequestParam Long receiverId){
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
