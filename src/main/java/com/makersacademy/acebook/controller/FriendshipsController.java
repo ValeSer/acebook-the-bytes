@@ -2,20 +2,17 @@ package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.Friendship;
 import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.model.UserService;
+import com.makersacademy.acebook.service.UserService;
 import com.makersacademy.acebook.repository.FriendshipRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 public class FriendshipsController {

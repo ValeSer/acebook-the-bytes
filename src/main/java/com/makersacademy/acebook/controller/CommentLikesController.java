@@ -3,6 +3,7 @@ import com.makersacademy.acebook.model.*;
 import com.makersacademy.acebook.repository.CommentLikeRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import com.makersacademy.acebook.service.CommentLikesService;
+import com.makersacademy.acebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

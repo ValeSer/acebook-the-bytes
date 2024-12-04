@@ -5,91 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/posts.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
     <link rel="stylesheet" href="/css/nav.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <style>
-        .hidden {
-          display: none;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div th:insert="fragments/nav :: navigation"></div>
 <h1 class="page_header posts_header">My Profile</h1>
-<header>
 
-</header>
-
-<div class="profile-container">
-    <div class="profile-header">
+<!-- Profile Picture Section -->
+<div class="profile-header">
+    <div class="profile-photo-container">
         <img
                 th:src="${user.profilePhotoUrl}"
                 th:alt="'Profile photo of ' + ${user.firstName} + ' ' + ${user.lastName}"
-                width="250"
-                height="250"
+                width="200"
+                height="200"
         />
+        <button class="edit-button" onclick="togglePhotoUpdateForm(event)">
+            <i class="fa fa-edit"></i>
+        </button>
 
-        <h1 th:text="${#strings.capitalize(user.firstName)} + ' ' + ${#strings.capitalize(user.lastName)}">User Full Name</h1>
-        <p th:text="${user.username}">@username</p>
-        <p>
-            <strong>Status:</strong>
-            <span th:text="${user.myStatus != null ? user.myStatus : 'No status set'}">No status set</span>
-        </p>
-        <p>
-            <strong>Bio:</strong>
-            <span th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span>
-        </p>
-
-        <button type="button" id="editButton" onclick="toggleUpdateForm()">Update Profile</button>
-    </div>
-
-    <form id="updateForm" th:action="@{/users/update}" th:object="${user}" method="post" class="hidden">
-        <div>
-            <label for="myStatus">Status</label>
-            <input
-                    type="text"
-                    id="myStatus"
-                    th:field="*{myStatus}"
-                    placeholder="Enter new status"
-                    required
-                    maxlength="150"
-            />
-        </div>
-        <div>
-            <label for="bio">Bio</label>
-            <textarea
-                    id="bio"
-                    th:field="*{bio}"
-                    placeholder="Enter new bio"
-                    required
-                    maxlength="300">
-      </textarea>
-        </div>
-        <div>
-            <label for="profilePhotoUrl">Profile Picture URL</label>
+        <!-- Hidden form for updating profile picture -->
+        <form id="photoUpdateForm" th:action="@{/users/update}" th:object="${user}" method="post" class="hidden">
             <input
                     type="url"
                     id="profilePhotoUrl"
                     th:field="*{profilePhotoUrl}"
                     placeholder="Enter new profile picture URL"
                     required
+
             />
-        </div>
-        <button type="submit">Save Changes</button>
-        <button type="button" onclick="toggleUpdateForm()">Cancel</button>
+            <button type="submit" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
+                    Update
+                    </button>
+            <button type="button" onclick="cancelPhotoUpdateForm(event)" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
+                    Cancel
+            </button>
+        </form>
+    </div>
+    <h1 th:text="${#strings.capitalize(user.firstName)} + ' ' + ${#strings.capitalize(user.lastName)}">User Full Name</h1>
+    <p th:text="${user.username}">@username</p>
+</div>
+
+<!-- Horizontal Divider -->
+<div class="divider"></div>
+
+<!-- Tabs -->
+<div class="tabs">
+    <div class="tab active" data-target="posts">Posts</div>
+    <div class="tab" data-target="about">About</div>
+    <div class="tab" data-target="friends">Friends</div>
+</div>
+
+<!-- Tab Content -->
+<div id="posts" class="tab-content active">
+    <button onclick="window.location.href='/posts'" style="background-color: var(--acebook-blue); color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">
+        Go to Posts
+    </button>
+</div>
+
+
+<div id="about" class="tab-content">
+    <h2>About</h2>
+    <p><strong>Bio:</strong> <span th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span></p>
+    <button type="button" onclick="toggleBioForm()">Edit Bio</button>
+
+    <!-- Hidden form for editing bio -->
+    <form id="bioForm" th:action="@{/users/update}" th:object="${user}" method="post" class="hidden">
+        <textarea
+                id="bio"
+                th:field="*{bio}"
+                placeholder="Enter your bio"
+                required
+                maxlength="300"
+                style="margin-top: 40px;"></textarea>
+        <button type="submit" style="background-color: var(--acebook-blue); color: white; border-radius: 5px; padding: 5px 5px; font-size: 14px; cursor: pointer;">
+            Save
+        </button>
+        <button type="button" onclick="toggleBioForm()">Cancel</button>
     </form>
 </div>
 
+<div id="friends" class="tab-content">
+    <h2>Friends</h2>
+    <p>No friends to display.</p>
+</div>
+
 <script>
-    function toggleUpdateForm() {
-      const form = document.getElementById("updateForm");
-      form.classList.toggle("hidden");
-    }
+
+    // Tab Functionality
+    document.querySelectorAll(".tab").forEach(tab => {
+        tab.addEventListener("click", function () {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
+
+            // Add active class to the selected tab and its content
+            this.classList.add("active");
+            document.getElementById(this.getAttribute("data-target")).classList.add("active");
+        });
+    });
+
+    // Toggle Photo Update Form
+function togglePhotoUpdateForm(event) {
+    event.preventDefault();
+    const form = document.getElementById("photoUpdateForm");
+    const button = document.querySelector(".edit-button");
+
+     // Toggle the visibility of the form
+        form.classList.toggle("hidden");
+
+        // If the form is shown, hide the edit button
+        if (!form.classList.contains("hidden")) {
+            button.style.display = "none"; // Hide the button
+        } else {
+            button.style.display = "inline-block"; // Show the button again
+        }
+
+
+}
+
+function toggleBioForm(event) {
+    if (event) event.preventDefault();
+    const bioForm = document.getElementById("bioForm");
+    const editBioButton = document.querySelector("button[onclick='toggleBioForm()']");
+
+    const isHidden = bioForm.classList.contains("hidden");
+    bioForm.classList.toggle("hidden", !isHidden);
+    editBioButton.style.display = isHidden ? "none" : "inline-block";
+}
+
+// Cancel Photo Update Form
+function cancelPhotoUpdateForm(event) {
+    event.preventDefault();
+    const form = document.getElementById("photoUpdateForm");
+    const button = document.querySelector(".edit-button");
+    form.classList.add("hidden");  // Hide the form
+    button.style.display = "inline-block";  // Show the button
+}
+
 </script>
+
 
 </body>
 </html>

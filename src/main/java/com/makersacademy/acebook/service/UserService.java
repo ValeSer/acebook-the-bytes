@@ -1,10 +1,10 @@
-package com.makersacademy.acebook.model;
+package com.makersacademy.acebook.service;
 
+import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
