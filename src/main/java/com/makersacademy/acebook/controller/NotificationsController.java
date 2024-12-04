@@ -2,10 +2,11 @@ package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.Notification;
 import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.model.UserService;
+
 import com.makersacademy.acebook.repository.NotificationRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import com.makersacademy.acebook.service.NotificationsService;
+import com.makersacademy.acebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
