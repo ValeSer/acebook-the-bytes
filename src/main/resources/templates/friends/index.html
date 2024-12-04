@@ -15,15 +15,15 @@
   <script src="/js/main.js" defer></script>
 </head>
 <body>
-<div th:insert="fragments/nav :: navigation"></div>
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
 
 <!--<div th:each="request : ${friendRequests}" class="card search_results_card">-->
 <!--  <p th:text="${user.username}"></p>-->
 <!--</div>-->
 
 
-
-<div sec:authorize="isAuthenticated()" id="greeting">
+  <div th:insert="posts/new_post :: newPost"></div>
+  <div sec:authorize="isAuthenticated()" id="greeting">
   Signed in as <span sec:authentication="principal.attributes['email']"></span>
 </div>
 </body>

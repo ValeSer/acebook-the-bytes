@@ -66,7 +66,8 @@ public class PostsController {
         User user = userService.getUserProfile();
         model.addAttribute("currentUserId", user.getId());
         model.addAttribute("currentUser", user);
-
+        System.out.println("*******ID*******");
+        System.out.println(user.getId());
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         model.addAttribute("comment", new Comment());

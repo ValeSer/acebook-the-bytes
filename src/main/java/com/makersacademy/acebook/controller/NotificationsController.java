@@ -1,6 +1,7 @@
 package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.Notification;
+import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 
 import com.makersacademy.acebook.repository.NotificationRepository;
@@ -29,6 +30,7 @@ public class NotificationsController {
 
     @GetMapping("/notifications")
     public String viewNotifications(Model model) {
+        User user = userService.getUserProfile();
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -37,6 +39,9 @@ public class NotificationsController {
         Iterable<Notification> allNotificationsForUser = notificationsService.getNotificationsForUser(userId);
 
         model.addAttribute("notifications", allNotificationsForUser);
+        model.addAttribute("currentUserId", userId);
+        model.addAttribute("currentUser", user);
+        model.addAttribute("post", new Post());
         return "notifications/index";
     }
 }

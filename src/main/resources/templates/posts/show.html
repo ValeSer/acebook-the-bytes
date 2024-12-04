@@ -15,7 +15,7 @@
   <script src="/js/main.js" defer></script>
 </head>
 <body>
-  <div th:insert="fragments/nav :: navigation"></div>
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
   <div class="results-container posts_container post-container">
     <div class="card post_card">
 
@@ -60,7 +60,7 @@
         <div class="comment_details_container">
           <div class="comment_user_details">
             <img th:src="${postComment['profilePhotoUrl']}" class="post_comment_photo" />
-            <p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p>
+            <a th:href="@{/profile/{id}(id=${postComment['id']})}"><p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p></a>
           </div>
           <form th:if="${postComment['commenterId'] == currentUserId}" action="#" th:action="@{/comment/{id}(id=${postComment['id']})}" th:method="delete">
             <input type="submit" value="Delete" class="comment_delete_btn clickable"/>

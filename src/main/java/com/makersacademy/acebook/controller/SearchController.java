@@ -1,6 +1,7 @@
 package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.Friendship;
+import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.service.UserService;
 import com.makersacademy.acebook.repository.FriendshipRepository;
@@ -26,7 +27,7 @@ public class SearchController {
     @GetMapping("/search")
     public ModelAndView viewSearchResults(@RequestParam(value = "nav-search", required = false) String query) {
         ModelAndView searchView = new ModelAndView("/search/index");
-
+        User currentUser = userService.getUserProfile();
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -46,6 +47,9 @@ public class SearchController {
 
         searchView.addObject("users", allUsers);
         searchView.addObject("friendshipsExist", friendshipsExist);
+        searchView.addObject("currentUserId", userId);
+        searchView.addObject("currentUser", currentUser);
+        searchView.addObject("post", new Post());
 
         return searchView;
     }

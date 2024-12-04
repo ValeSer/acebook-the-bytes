@@ -29,6 +29,10 @@ public class UserService {
 
     }
 
+    public User getUserProfileById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public String getAuthenticatedUserEmail() {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()

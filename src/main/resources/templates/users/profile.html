@@ -14,16 +14,16 @@
     <script src="/js/main.js" defer></script>
 </head>
 <body>
-    <div th:insert="fragments/nav :: navigation"></div>
+    <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
 
     <!-- Profile Picture Section -->
     <div class="profile-header">
         <div class="profile-photo-container">
             <img
-                    th:src="${user.profilePhotoUrl}"
-                    th:alt="'Profile photo of ' + ${user.firstName} + ' ' + ${user.lastName}"
+                    th:src="${profileUser.profilePhotoUrl}"
+                    th:alt="'Profile photo of ' + ${profileUser.firstName} + ' ' + ${profileUser.lastName}"
             />
-            <button class="edit-button" onclick="togglePhotoUpdateForm(event)">
+            <button th:if="${profileUserId == currentUserId}" class="edit-button" onclick="togglePhotoUpdateForm(event)">
                 <i class="fa fa-edit"></i>
             </button>
 
@@ -44,7 +44,7 @@
                 </button>
             </form>
         </div>
-        <h1 th:text="${#strings.capitalize(user.firstName)} + ' ' + ${#strings.capitalize(user.lastName)}" class="page_header profile_name_header"></h1>
+        <h1 th:text="${#strings.capitalize(profileUser.firstName)} + ' ' + ${#strings.capitalize(profileUser.lastName)}" class="page_header profile_name_header"></h1>
         <p th:text="${numFriends} + ' friends'" class="profile_num_friends"></p>
     </div>
 
@@ -65,10 +65,10 @@
                 <div class="post_card_user_details">
                     <img
                             class="post_card_user_img"
-                            th:src="${currentUser.profilePhotoUrl}"
+                            th:src="${profileUser.profilePhotoUrl}"
                     />
                     <div class="post_card_user_text">
-                        <p th:text="${#strings.capitalize(currentUser.firstName) + ' ' + #strings.capitalize(currentUser.lastName)}" class="post_card_user_name"></p>
+                        <p th:text="${#strings.capitalize(profileUser.firstName) + ' ' + #strings.capitalize(profileUser.lastName)}" class="post_card_user_name"></p>
                         <p th:text="${post.createdAt}" class="post_card_user_date"></p>
                     </div>
                 </div>
@@ -101,9 +101,9 @@
                     <div class="comment_details_container">
                         <div class="comment_user_details">
                             <img th:src="${postComment['profilePhotoUrl']}" class="post_comment_photo" />
-                            <p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p>
+                            <a th:href="@{/profile/{id}(id=${postComment['id']})}"><p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p></a>
                         </div>
-                        <form th:if="${postComment['commenterId'] == currentUserId}" action="#" th:action="@{/comment/{id}(id=${postComment['id']})}" th:method="delete">
+                        <form th:if="${postComment['commenterId'] == profileUserId}" action="#" th:action="@{/comment/{id}(id=${postComment['id']})}" th:method="delete">
                             <input type="submit" value="Delete" class="comment_delete_btn clickable"/>
                         </form>
                     </div>
@@ -164,7 +164,7 @@
         <div class="bio_friend_cards_container">
             <div th:each="friend: ${friends}">
                 <div class="card bio_friend_card">
-                    <div th:text="${friend.firstName} + ' ' + ${friend.lastName}" class="bio_friend_name clickable"></div>
+                    <a th:href="@{/profile/{id}(id=${friend.id})}"><div th:text="${friend.firstName} + ' ' + ${friend.lastName}" class="bio_friend_name clickable"></div></a>
                     <button class="blue_btn clickable">Message</button>
                 </div>
             </div>

@@ -15,9 +15,11 @@
   <script src="/js/main.js" defer></script>
 </head>
 <body>
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
   <h1>Notifications</h1>
   <div th:each="notification: ${notifications}">
     <div th:text="${notification.content}"></div>
   </div>
+  <div th:insert="posts/new_post :: newPost"></div>
 </body>
 </html>

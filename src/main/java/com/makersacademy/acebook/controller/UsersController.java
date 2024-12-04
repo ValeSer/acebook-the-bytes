@@ -40,24 +40,27 @@ public class UsersController {
     @Autowired
     CommentLikesService commentLikesService;
 
-    @GetMapping("/profile")
-    public ModelAndView getUserProfile() {
+    @GetMapping("/profile/{id}")
+    public ModelAndView getUserProfile(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView();
-        User user = userService.getUserProfile();
-        Long userId = user.getId();
 
-        if (user != null) {
-            modelAndView.addObject("user", user);
+        User loggedInUser = userService.getUserProfile();
+        Long loggedInUserId = loggedInUser.getId();
+
+        User profileUser = userService.getUserProfileById(id);
+
+        if (profileUser != null) {
+            modelAndView.addObject("user", profileUser);
             modelAndView.setViewName("users/profile");
         } else {
             modelAndView.addObject("error", "User not found");
             modelAndView.setViewName("error");
         }
 
-        long numFriends = friendshipsService.numberOfFriendshipsForUser(userId);
-        Map<Long, User> friends = friendshipsService.getFriendsForUser(userId);
+        long numFriends = friendshipsService.numberOfFriendshipsForUser(id);
+        Map<Long, User> friends = friendshipsService.getFriendsForUser(id);
 
-        Iterable<Post> posts = postsService.findPostsForUser(userId);
+        Iterable<Post> posts = postsService.findPostsForUser(id);
 
         Map<Long, List<Map<String, Object>>> postCommentMapWithDetails = new HashMap<>();
         Map<Long, Boolean> userLikedPostsMap = new HashMap<>();
@@ -69,7 +72,7 @@ public class UsersController {
             Iterable<PostLike> postLikes = postLikesService.getLikesByPostId(post.getId());
             postLikeMap.put(post.getId(), postLikes);
 
-            boolean postIsLikedByUser = postLikesService.userHasLikedPost(post.getId(), user.getId());
+            boolean postIsLikedByUser = postLikesService.userHasLikedPost(post.getId(), id);
             userLikedPostsMap.put(post.getId(), postIsLikedByUser);
 
             List<Map<String, Object>> commentsWithDetails = commentsService.getCommentsDetailsByPostId(post.getId());
@@ -81,13 +84,15 @@ public class UsersController {
                 commentLikeMap.put(comment.getId(), commentLikes);
 
                 // Get whether comment has been liked by logged in user
-                boolean commentIsLikedByUser = commentLikesService.userHasLikedComment(comment.getId(), user.getId());
+                boolean commentIsLikedByUser = commentLikesService.userHasLikedComment(comment.getId(), id);
                 userLikedCommentsMap.put(comment.getId(), commentIsLikedByUser);
             }
         }
 
-        modelAndView.addObject("currentUserId", user.getId());
-        modelAndView.addObject("currentUser", user);
+        modelAndView.addObject("profileUserId", id);
+        modelAndView.addObject("profileUser", profileUser);
+        modelAndView.addObject("currentUserId", loggedInUserId);
+        modelAndView.addObject("currentUser", loggedInUser);
         modelAndView.addObject("numFriends", numFriends);
         modelAndView.addObject("friends", friends.values());
         modelAndView.addObject("posts", posts);

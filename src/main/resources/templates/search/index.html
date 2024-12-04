@@ -11,15 +11,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <script src="/js/newPost.js" defer></script>
+  <script src="/js/main.js" defer></script>
 </head>
 <body>
-  <div th:insert="fragments/nav :: navigation"></div>
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
   <h1 class="page_header search_header">Search Results</h1>
 
   <div class="results-container search_results_container">
     <div th:each="user, iterStat : ${users}" class="card search_results_card">
       <div>
-        <p th:text="${user.username}"></p>
+        <a th:href="@{/profile/{id}(id=${user.id})}"><p th:text="${user.username}"></p></a>
         <!-- Hardcoded - to be replaced later -->
         <p class="search_mutual">3 mutual friends</p>
       </div>
@@ -33,6 +35,8 @@
   <div th:if="${users.size() == 0}">
     <p class="search_no_results_text">No results found.</p>
   </div>
+
+  <div th:insert="posts/new_post :: newPost"></div>
 
 </body>
 </html>
