@@ -107,7 +107,7 @@ public class PostsController {
             } else if (timeDiff.toHours() < 24) {
                 formattedTime = timeDiff.toHours() + "h ago";
             } else {
-                formattedTime = postCreatedAt.format(DateTimeFormatter.ofPattern("dd MMM yyyy h:mm a"));
+                formattedTime = postCreatedAt.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mm a"));
             }
             formattedTimestamps.put(post.getId(), formattedTime);
 
