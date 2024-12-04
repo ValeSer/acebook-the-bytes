@@ -19,4 +19,8 @@ public class PostsService {
     public Iterable<Post> getPostsInDateOrder() {
         return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
+
+    public Iterable<Post> findPostsForUser(Long userId) {
+        return postRepository.getPostsByUserIdOrderByCreatedAtDesc(userId);
+    }
 }

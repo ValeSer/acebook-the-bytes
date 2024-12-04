@@ -6,22 +6,35 @@
             border-bottom: 1px solid #ccc;
 }
 
+.profile_name_header {
+    margin: 0;
+}
+
+.profile_num_friends {
+    opacity: 0.6;
+}
+
 .profile-photo-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 }
 
 .profile-photo-container img {
             border-radius: 50%;
             border: 3px solid #ddd;
+            width: 12rem;
+            height: 12rem;
+            margin: 0 auto;
+            position: relative;
+            object-fit: cover;
+            object-position: center;
 }
 
 .edit-button {
             position: relative;
-            bottom: 40px;
-            right: 10px;
-            transform: translate(-120%, 20%);
+            bottom: 50px;
+            left: 70px;
             background-color: var(--acebook-blue);
             color: white;
             border: none;
@@ -30,9 +43,24 @@
             cursor: pointer;
 }
 
-.button {
+#photoUpdateForm {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+}
 
-color: var(--acebook-blue);
+.profile_bio {
+    max-width: 48rem;
+    margin: 0 auto;
+}
+
+.bio_card {
+    max-width: 52rem;
+    margin: 0 auto 1rem auto;
+}
+
+.profile_bio_btn_container {
+    display: flex;
+    justify-content: center;
 }
 
 
@@ -61,7 +89,7 @@ color: var(--acebook-blue);
 .tab-content {
             display: none;
             padding: 20px;
-            background: #fff;
+            background: var(--light-grey);
 }
 
 .tab-content.active {
@@ -85,6 +113,25 @@ button[onclick="toggleBioForm()"] {
     border-radius: 5px; /* Round the corners */
     cursor: pointer; /* Change the cursor to a pointer */
     font-size: 14px;
+}
+
+.show_bio_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.show_bio_form textarea {
+    width: 32rem;
+    height: 6rem;
+    margin-top: 2rem;
+}
+
+.bio_form_buttons {
+    display: flex;
+    gap: 2rem;
+}
 
 .button {
     background-color: var(--acebook-blue); /* Blue background */
@@ -99,4 +146,23 @@ button[onclick="toggleBioForm()"] {
 .a {
  color: var(--acebook-blue);
  padding: 5px 5px;
+}
+
+.bio_friend_name {
+    font-weight: 400;
+}
+
+.bio_friend_cards_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.bio_friend_card {
+    width: 24rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

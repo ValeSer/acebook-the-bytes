@@ -37,6 +37,9 @@ public class CloudinaryService {
             baos.close();
 
             Map<String, Object> uploadResult = cloudinary.uploader().upload(compressedImageBytes, ObjectUtils.emptyMap());
+            System.out.println("Cloudinary upload result: " + uploadResult);
+            System.out.println("Cloudinary upload result: " + uploadResult.get("url"));
+
             return (String) uploadResult.get("url");
         } catch (Exception e) {
             System.out.println("Error uploading image: " + e.getMessage());
