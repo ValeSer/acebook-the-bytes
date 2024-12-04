@@ -1,0 +1,17 @@
+.no-requests-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.no-requests-text {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+}
+
+.emoji {
+  font-size: 30px;
+  margin-left: 10px;
+}

@@ -11,21 +11,36 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <script src="/js/newPost.js" defer></script>
+  <script src="/js/main.js" defer></script>
 </head>
 <body>
   <div th:insert="fragments/nav :: navigation"></div>
   <h1 class="page_header search_header">Search Results</h1>
 
   <div class="results-container search_results_container">
-    <div th:each="user, iterStat : ${users}" class="card search_results_card">
+    <div th:each="user : ${users}" class="card search_results_card">
       <div>
-        <p th:text="${user.username}"></p>
+
+        <p th:text="${user.firstName + ' ' + user.lastName}"></p>
         <!-- Hardcoded - to be replaced later -->
         <p class="search_mutual">3 mutual friends</p>
+
       </div>
-      <form action="/search" method="post">
+      <form action="/friends/new" method="post">
         <input type="hidden" name="receiverId" th:value="${user.id}" />
-        <button type="submit" class="clickable blue_btn" th:text="${friendshipsExist[iterStat.index] ? 'Remove Friend' : 'Add Friend'}">
+
+        <!-- Mostra il messaggio se l'amicizia è "accepted" -->
+        <p th:if="${friendshipStatuses[user.id] == 'accepted'}">You are already friends</p>
+        <button type="submit" class="clickable blue_btn"
+                th:if="${friendshipStatuses[user.id] == 'accepted'}"
+                th:text="'Remove Friend'">
+        </button>
+
+        <!-- Mostra il bottone "Add Friend" solo se non c'è amicizia o se è "pending" -->
+        <button type="submit" class="clickable blue_btn"
+                th:if="${friendshipStatuses[user.id] != 'accepted'}"
+                th:text="${friendshipStatuses[user.id] == 'none' ? 'Add Friend' : 'Remove Friend'}">
         </button>
       </form>
     </div>
@@ -33,6 +48,8 @@
   <div th:if="${users.size() == 0}">
     <p class="search_no_results_text">No results found.</p>
   </div>
+
+  <div th:insert="posts/new_post :: newPost"></div>
 
 </body>
 </html>
