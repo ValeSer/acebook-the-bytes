@@ -59,7 +59,6 @@ public class FriendshipsController {
     }
 
 
-// /friendship
     @PostMapping("/search")
     public RedirectView toggleFriendshipRequest(@RequestParam Long receiverId){
         String username = userService.getAuthenticatedUserEmail();
@@ -67,9 +66,12 @@ public class FriendshipsController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Long userId = userDetails.getId();
         Friendship existingFriendship = friendshipRepository.findBySenderIdAndReceiverId(userId, receiverId);
-        // send the notification
         if (existingFriendship != null) {
-            friendshipRepository.delete(existingFriendship);
+            String status = existingFriendship.getStatus();
+
+            if ("pending".equals(status) || "accepted".equals(status)) {
+                friendshipRepository.delete(existingFriendship);
+            }
         } else {
             Friendship friendshipRequest = new Friendship();
             friendshipRequest.setSenderId(userId);
@@ -77,7 +79,6 @@ public class FriendshipsController {
             friendshipRequest.setReceiverId(receiverId);
             friendshipRequest.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendshipRequest);
-            // send the notification
         }
             return new RedirectView("/search");
     }
