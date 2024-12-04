@@ -1,5 +1,7 @@
 package com.makersacademy.acebook.model;
 
+import com.makersacademy.acebook.listener.CommentListener;
+import com.makersacademy.acebook.listener.FriendshipListener;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@EntityListeners(CommentListener.class)
 @Table(name = "COMMENTS")
 public class Comment {
 
