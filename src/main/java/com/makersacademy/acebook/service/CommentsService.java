@@ -37,4 +37,8 @@ public class CommentsService {
         }
         return commentsWithUserDetails;
     }
+
+    public long numberOfCommentsForPost(Long postId) {
+        return commentRepository.countByPostId(postId);
+    }
 }

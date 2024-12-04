@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
+<head lang="en">
+  <meta charset="UTF-8"/>
+  <title>Acebook</title>
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/posts.css" />
+  <link rel="stylesheet" href="/css/nav.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <script src="/js/newPost.js" defer></script>
+  <script src="/js/main.js" defer></script>
+</head>
+<body>
+  <div th:insert="fragments/nav :: navigation"></div>
+  <div class="results-container posts_container post-container">
+    <div class="card post_card">
+
+      <div class="post_card_user_details">
+        <img
+                class="post_card_user_img"
+                th:src="${user.profilePhotoUrl}"
+                th:alt="'Profile photo of ' + ${user.firstName} + ' ' + ${user.lastName}"
+        />
+        <div class="post_card_user_text">
+                    <p th:text="${#strings.capitalize(user.firstName) + ' ' + #strings.capitalize(user.lastName)}" class="post_card_user_name"></p>
+          <p th:text="${post.createdAt}" class="post_card_user_date"></p>
+        </div>
+      </div>
+
+      <form th:if="${post.userId == currentUserId}" action="#" th:action="@{/post/{id}(id=${post.id})}" th:method="delete" class="post_card_delete_container">
+        <input type="submit" value="Delete" class="post_card_delete_btn clickable" />
+      </form>
+
+      <div class="post_card_img_container">
+        <img th:if="${post.photoUrl != null and post.photoUrl != ''}" th:src="${post.photoUrl}" class="post_card_img" />
+      </div>
+      <p th:text="${post.content}"></p>
+      <hr class="hr_line">
+
+      <div class="post_card_likes_comments_totals">
+        <div class="post_card_icon_and_total">
+          <button class="post_like_button like_button clickable"
+                  th:data-post-id="${post.id}"
+                  th:data-liked="${postIsLiked}">
+            <i class="fa" th:class="${postIsLiked} ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
+          </button>
+          <div th:text="${postLikeCount}" th:id="'post_like_count_' + ${post.id}" class="post_like_count like_count"></div>
+        </div>
+        <div class="post_card_icon_and_total">
+          <div><i class="fa-regular fa-comment post_card_comment"></i></div>
+          <div th:text="${postCommentCount}"></div>
+        </div>
+      </div>
+
+      <div th:each="postComment: ${postComments}" class="comment_container">
+        <div class="comment_details_container">
+          <div class="comment_user_details">
+            <img th:src="${postComment['profilePhotoUrl']}" class="post_comment_photo" />
+            <p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p>
+          </div>
+          <form th:if="${postComment['commenterId'] == currentUserId}" action="#" th:action="@{/comment/{id}(id=${postComment['id']})}" th:method="delete">
+            <input type="submit" value="Delete" class="comment_delete_btn clickable"/>
+          </form>
+        </div>
+        <div class="comment_content_and_likes">
+          <p th:text="${postComment['content']}" class="comment_content"></p>
+          <div class="comment_likes">
+            <button class="comment_like_button like_button clickable"
+                    th:data-comment-id="${postComment['id']}"
+                    th:data-comment-liked="${userLikedComments[postComment['id']]}">
+              <i class="fa" th:class="${userLikedComments[postComment['id']]} ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
+            </button>
+            <div th:text="${commentLikes.size()}" th:id="'comment_like_count_' + ${postComment['id']}" class="comment_like_count like_count"></div>
+          </div>
+        </div>
+      </div>
+
+      <form action="#" th:action="@{/posts/{id}/comments/new(id=${post.id})}" th:object="${comment}" method="post" class="comment_form">
+        <div class="comment_form_container">
+          <input id="comment" type="text" th:field="*{content}" placeholder="Add a comment..." />
+          <button type="button" id="comment_submit">
+            <i class="fa-regular fa-paper-plane comment_plane clickable"></i>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div th:insert="posts/new_post :: newPost"></div>
+
+</body>
+</html>

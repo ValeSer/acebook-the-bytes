@@ -24,4 +24,6 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
         WHERE comments.post_id = :postId
     """, nativeQuery = true)
     List<Object[]> searchAllDetailsByPostId(@Param("postId") Long postId);
+
+    long countByPostId(Long postId);
 }
