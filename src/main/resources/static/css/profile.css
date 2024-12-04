@@ -18,7 +18,7 @@
 }
 
 .edit-button {
-            position: absolute;
+            position: relative;
             bottom: 40px;
             right: 10px;
             transform: translate(-120%, 20%);
@@ -99,8 +99,4 @@ button[onclick="toggleBioForm()"] {
 .a {
  color: var(--acebook-blue);
  padding: 5px 5px;
-}
-
-.hidden {
-display: none;
 }

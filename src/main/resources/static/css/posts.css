@@ -1,3 +1,148 @@
 .posts_container {
     max-width: 32rem;
 }
+
+.post_card {
+    position: relative;
+}
+
+.post_like_button, .comment_like_button {
+    all: unset;
+    color: var(--acebook-blue);
+}
+
+.post_card_delete_container {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+}
+
+.post_card_delete_btn, .comment_delete_btn {
+    all: unset;
+}
+
+.post_card_delete_container, .comment_delete_btn {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.post_card_delete_container:hover, .comment_delete_btn:hover {
+    opacity: 1;
+}
+
+.post_card_user_details {
+    display: flex;
+    gap: 2rem;
+}
+
+.post_card_user_img {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.post_card_user_text {
+    display: flex;
+    flex-direction: column;
+}
+
+.post_card_user_name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.post_card_user_date {
+    margin: 0.2rem 0 0 1rem;
+    font-size: 0.8rem;
+}
+
+.post_card_img_container {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.post_card_img {
+    max-height: 16rem;
+    width: auto;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 4px;
+}
+
+.post_card_comment {
+    color: var(--acebook-blue);
+}
+
+.post_card_likes_comments_totals {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+    padding: 0 1rem;
+}
+
+.post_card_icon_and_total {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.comment_form_container {
+    background-color: var(--light-grey);
+    padding: 1rem;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#comment, #comment_submit {
+    all: unset;
+}
+
+#comment {
+    flex: 1;
+}
+
+.comment_plane {
+    all: unset;
+    color: var(--acebook-blue);
+}
+
+.comment_details_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment_user_details, .comment_likes {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.post_comment_photo {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+}
+
+.comment_content_and_likes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment_content {
+    margin: 0.3rem 0 0 2rem;
+}
+
+.comment_name {
+    font-weight: 500;
+    margin: 0;
+}
+
+.comment_container {
+    margin-bottom: 1rem;
+}

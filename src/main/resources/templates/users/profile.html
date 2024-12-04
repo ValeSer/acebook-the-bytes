@@ -38,19 +38,11 @@
 
             />
             <button type="submit" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
-<<<<<<< Updated upstream
                     Update
                     </button>
             <button type="button" onclick="cancelPhotoUpdateForm(event)" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
                     Cancel
-                    </button>
-=======
-                Update
             </button>
-            <button type="button" onclick="cancelPhotoUpdateForm(event)" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
-                Cancel
-            </button>
->>>>>>> Stashed changes
         </form>
     </div>
     <h1 th:text="${#strings.capitalize(user.firstName)} + ' ' + ${#strings.capitalize(user.lastName)}">User Full Name</h1>
@@ -122,6 +114,16 @@ function togglePhotoUpdateForm(event) {
     const form = document.getElementById("photoUpdateForm");
     const button = document.querySelector(".edit-button");
 
+     // Toggle the visibility of the form
+        form.classList.toggle("hidden");
+
+        // If the form is shown, hide the edit button
+        if (!form.classList.contains("hidden")) {
+            button.style.display = "none"; // Hide the button
+        } else {
+            button.style.display = "inline-block"; // Show the button again
+        }
+
 
 }
 
@@ -145,5 +147,7 @@ function cancelPhotoUpdateForm(event) {
 }
 
 </script>
+
+
 </body>
 </html>
