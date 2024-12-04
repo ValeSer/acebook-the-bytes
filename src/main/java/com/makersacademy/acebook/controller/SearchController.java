@@ -1,6 +1,7 @@
 package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.Friendship;
+import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.service.UserService;
 import com.makersacademy.acebook.repository.FriendshipRepository;
@@ -94,8 +95,17 @@ public class SearchController {
             }
         }
 
+
         searchView.addObject("users", filteredUsers);
         searchView.addObject("friendshipStatuses", friendshipStatuses);
+
+        User user = userService.getUserProfile();
+        searchView.addObject("currentUserId", user.getId());
+        searchView.addObject("currentUser", user);
+        searchView.addObject("post", new Post());
+        searchView.addObject("users", allUsers);
+        searchView.addObject("friendshipsExist", friendshipsExist);
+
 
         return searchView;
     }

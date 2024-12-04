@@ -94,19 +94,7 @@ public class PostsController {
             userLikedPostsMap.put(post.getId(), postIsLikedByUser);
 
             // Get formatted timestamps
-            LocalDateTime postCreatedAt = post.getCreatedAt();
-            LocalDateTime timeNow = LocalDateTime.now();
-            Duration timeDiff = Duration.between(postCreatedAt, timeNow);
-            String formattedTime;
-            if (timeDiff.toMinutes() < 60) {
-                long minutes = Math.max(timeDiff.toMinutes() + 1, 1);
-                formattedTime = minutes + "m ago";
-            } else if (timeDiff.toHours() < 24) {
-                formattedTime = timeDiff.toHours() + "h ago";
-            } else {
-                formattedTime = postCreatedAt.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mm a"));
-            }
-            formattedTimestamps.put(post.getId(), formattedTime);
+            formattedTimestamps.put(post.getId(), getFormattedTimestamp(post.getCreatedAt()));
 
             // Get likes for all comments for each post
             for (Comment comment: comments) {
@@ -176,7 +164,7 @@ public class PostsController {
     public String showPost(Model model, @PathVariable Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        User user = userRepository.findById(post.getId())
+        User user = userRepository.findById(post.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         User currentUser = userService.getUserProfile();
@@ -208,6 +196,21 @@ public class PostsController {
         model.addAttribute("postComments", postComments);
         model.addAttribute("commentLikes", commentLikeMap);
         model.addAttribute("userLikedComments", userLikedCommentsMap);
+        model.addAttribute("formattedTimestamp", getFormattedTimestamp(post.getCreatedAt()));
         return "posts/show";
+    }
+
+    private String getFormattedTimestamp(LocalDateTime createdAt) {
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(createdAt, now);
+
+        if (duration.toMinutes() < 60) {
+            long minutes = Math.max(duration.toMinutes() + 1, 1); // Round up to the next minute
+            return minutes + "m ago";
+        } else if (duration.toHours() < 24) {
+            return duration.toHours() + "h ago";
+        } else {
+            return createdAt.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mm a"));
+        }
     }
 }
