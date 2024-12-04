@@ -64,50 +64,50 @@ public class SearchController {
 
     @GetMapping("/search")
     public ModelAndView viewSearchResults(@RequestParam(value = "nav-search", required = false) String query) {
+        // Creazione della vista
         ModelAndView searchView = new ModelAndView("/search/index");
 
+        // Recupero dell'utente autenticato
         String username = userService.getAuthenticatedUserEmail();
-        User userDetails = userRepository.findUserByUsername(username)
+        User currentUser = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        Long userId = userDetails.getId();
+        Long currentUserId = currentUser.getId();
 
         Iterable<User> allUsers = userService.getUsersBySearchTerm(query);
 
         List<User> filteredUsers = new ArrayList<>();
-        Map<Long, String> friendshipStatuses = new HashMap<>();
-
         for (User user : allUsers) {
-            if (!user.getId().equals(userId)) {
+            if (!user.getId().equals(currentUserId)) {
                 filteredUsers.add(user);
             }
         }
 
+        Map<Long, String> friendshipStatuses = new HashMap<>();
+        boolean friendshipsExist = false;
+
         for (User user : filteredUsers) {
-            Friendship friendship = friendshipRepository.findBySenderIdAndReceiverId(userId, user.getId());
+            Friendship friendship = friendshipRepository.findBySenderIdAndReceiverId(currentUserId, user.getId());
             if (friendship == null) {
-                friendship = friendshipRepository.findBySenderIdAndReceiverId(user.getId(), userId);
+                friendship = friendshipRepository.findBySenderIdAndReceiverId(user.getId(), currentUserId);
             }
 
             if (friendship != null) {
                 friendshipStatuses.put(user.getId(), friendship.getStatus());
+                friendshipsExist = true;
             } else {
                 friendshipStatuses.put(user.getId(), "none");
             }
         }
 
-
         searchView.addObject("users", filteredUsers);
         searchView.addObject("friendshipStatuses", friendshipStatuses);
-
-        User user = userService.getUserProfile();
-        searchView.addObject("currentUserId", user.getId());
-        searchView.addObject("currentUser", user);
+        searchView.addObject("currentUserId", currentUserId);
+        searchView.addObject("currentUser", currentUser);
         searchView.addObject("post", new Post());
-        searchView.addObject("users", allUsers);
-        searchView.addObject("friendshipsExist", friendshipsExist);
-
+//        searchView.addObject("friendshipsExist", friendshipsExist);
 
         return searchView;
     }
+
 }
 

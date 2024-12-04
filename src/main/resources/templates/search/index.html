@@ -27,7 +27,7 @@
         <p class="search_mutual">3 mutual friends</p>
 
       </div>
-      <form action="/search" method="post">
+      <form action="/friends/new" method="post">
         <input type="hidden" name="receiverId" th:value="${user.id}" />
 
         <!-- Mostra il messaggio se l'amicizia è "accepted" -->
