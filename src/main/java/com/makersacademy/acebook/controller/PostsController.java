@@ -19,7 +19,9 @@ import org.imgscalr.Scalr;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,7 @@ public class PostsController {
         Map<Long, Boolean> userLikedPostsMap = new HashMap<>();
         Map<Long, Iterable<CommentLike>> commentLikeMap = new HashMap<>();
         Map<Long, Boolean> userLikedCommentsMap = new HashMap<>();
+        Map<Long, String> formattedTimestamps = new HashMap<>();
 
         User user = userService.getUserProfile();
         model.addAttribute("currentUserId", user.getId());
@@ -93,6 +96,21 @@ public class PostsController {
             boolean postIsLikedByUser = postLikesService.userHasLikedPost(post.getId(), user.getId());
             userLikedPostsMap.put(post.getId(), postIsLikedByUser);
 
+            // Get formatted timestamps
+            LocalDateTime postCreatedAt = post.getCreatedAt();
+            LocalDateTime timeNow = LocalDateTime.now();
+            Duration timeDiff = Duration.between(postCreatedAt, timeNow);
+            String formattedTime;
+            if (timeDiff.toMinutes() < 60) {
+                long minutes = Math.max(timeDiff.toMinutes() + 1, 1);
+                formattedTime = minutes + "m ago";
+            } else if (timeDiff.toHours() < 24) {
+                formattedTime = timeDiff.toHours() + "h ago";
+            } else {
+                formattedTime = postCreatedAt.format(DateTimeFormatter.ofPattern("d MMM yyyy h:mm a"));
+            }
+            formattedTimestamps.put(post.getId(), formattedTime);
+
             // Get likes for all comments for each post
             for (Comment comment: comments) {
                 Iterable<CommentLike> commentLikes = commentLikesService.getLikesByCommentId(comment.getId());
@@ -111,6 +129,7 @@ public class PostsController {
         model.addAttribute("likedPosts", userLikedPostsMap);
         model.addAttribute("commentLikes", commentLikeMap);
         model.addAttribute("likedComments", userLikedCommentsMap);
+        model.addAttribute("postTimestamps", formattedTimestamps);
 
         return "posts/index";
     }
