@@ -19,15 +19,28 @@
   <h1 class="page_header search_header">Search Results</h1>
 
   <div class="results-container search_results_container">
-    <div th:each="user, iterStat : ${users}" class="card search_results_card">
+    <div th:each="user : ${users}" class="card search_results_card">
       <div>
+
         <p th:text="${user.firstName + ' ' + user.lastName}"></p>
         <!-- Hardcoded - to be replaced later -->
         <p class="search_mutual">3 mutual friends</p>
+
       </div>
       <form action="/search" method="post">
         <input type="hidden" name="receiverId" th:value="${user.id}" />
-        <button type="submit" class="clickable blue_btn" th:text="${friendshipsExist[iterStat.index] ? 'Remove Friend' : 'Add Friend'}">
+
+        <!-- Mostra il messaggio se l'amicizia è "accepted" -->
+        <p th:if="${friendshipStatuses[user.id] == 'accepted'}">You are already friends</p>
+        <button type="submit" class="clickable blue_btn"
+                th:if="${friendshipStatuses[user.id] == 'accepted'}"
+                th:text="'Remove Friend'">
+        </button>
+
+        <!-- Mostra il bottone "Add Friend" solo se non c'è amicizia o se è "pending" -->
+        <button type="submit" class="clickable blue_btn"
+                th:if="${friendshipStatuses[user.id] != 'accepted'}"
+                th:text="${friendshipStatuses[user.id] == 'none' ? 'Add Friend' : 'Remove Friend'}">
         </button>
       </form>
     </div>
