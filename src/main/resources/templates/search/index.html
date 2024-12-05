@@ -30,6 +30,7 @@
       </div>
       <form action="/friends/new" method="post">
         <input type="hidden" name="receiverId" th:value="${user.id}" />
+        <input type="hidden" name="page" th:value="search" />
 
         <!-- Mostra il messaggio se l'amicizia è "accepted" -->
         <p th:if="${friendshipStatuses[user.id] == 'accepted'}">You are already friends</p>

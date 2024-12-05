@@ -60,7 +60,7 @@ public class FriendshipsController {
 
 
     @PostMapping("/friends/new")
-    public RedirectView toggleFriendshipRequest(@RequestParam Long receiverId){
+    public RedirectView toggleFriendshipRequest(@RequestParam Long receiverId, @RequestParam String page){
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -80,7 +80,12 @@ public class FriendshipsController {
             friendshipRequest.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendshipRequest);
         }
+
+        if ("profile".equals(page)) {
+            return new RedirectView("/profile/" + userId);
+        } else {
             return new RedirectView("/search");
+        }
     }
 
     @PostMapping("/friends/accept/{id}")
