@@ -2,6 +2,7 @@ package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.dto.FriendRequestDto;
 import com.makersacademy.acebook.model.Friendship;
+import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.service.UserService;
 import com.makersacademy.acebook.repository.FriendshipRepository;
@@ -32,6 +33,7 @@ public class FriendshipsController {
 
     @GetMapping("/friends")
     public String friendRequests(Model model) {
+        User user = userService.getUserProfile();
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -54,6 +56,8 @@ public class FriendshipsController {
             ));
         }
 
+        model.addAttribute("post", new Post());
+        model.addAttribute("currentUser", user);
         model.addAttribute("friendRequests", friendRequestDtos);
         return "friends/index";
     }
