@@ -120,4 +120,7 @@ public class Notification {
 
     public void setCommentLikeId(Long id) {
     }
+
+    public void setPostLikeId(Long id) {
+    }
 }

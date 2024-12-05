@@ -1,4 +1,6 @@
 package com.makersacademy.acebook.model;
+import com.makersacademy.acebook.listener.CommentLikeListener;
+import com.makersacademy.acebook.listener.PostLikeListener;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.Data;
@@ -6,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@EntityListeners(PostLikeListener.class)
 @Table(name = "POST_LIKES")
 public class PostLike {
     @Id
