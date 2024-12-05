@@ -31,7 +31,7 @@
 
                     <div class="post_card_user_details">
                         <img
-                                class="post_card_user_img"
+                                class="card_user_img"
                                 th:src="${postUserMap[post.userId].profilePhotoUrl}"
                                 th:alt="'Profile photo of ' + ${postUserMap[post.userId].firstName} + ' ' + ${postUserMap[post.userId].lastName}"
                         />
@@ -68,7 +68,7 @@
                     <div th:each="postComment: ${postCommentsDetails[post.id]}" class="comment_container">
                         <div class="comment_details_container">
                             <div class="comment_user_details">
-                                <img th:src="${postComment['profilePhotoUrl']}" class="post_comment_photo" />
+                                <img th:src="${postComment['profilePhotoUrl']}" class="card_user_img post_comment_photo" />
                                 <a th:href="@{/profile/{id}(id=${postComment['commenterId']})}"><p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p></a>
                             </div>
                             <form th:if="${postComment['commenterId'] == currentUserId}" action="#" th:action="@{/comment/{id}(id=${postComment['id']})}" th:method="delete">

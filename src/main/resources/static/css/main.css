@@ -146,7 +146,13 @@ a {
     box-sizing: border-box;
 }
 
-
+.card_user_img {
+     height: 3rem;
+     width: 3rem;
+     border-radius: 50%;
+     object-fit: cover;
+     object-position: center;
+ }
 
 /* Optional: Styling for the edit button */
 #editButton {
