@@ -3,6 +3,7 @@ package com.makersacademy.acebook.config;
 import com.makersacademy.acebook.listener.CommentLikeListener;
 import com.makersacademy.acebook.listener.CommentListener;
 import com.makersacademy.acebook.listener.FriendshipListener;
+import com.makersacademy.acebook.listener.PostLikeListener;
 import com.makersacademy.acebook.repository.CommentRepository;
 import com.makersacademy.acebook.repository.NotificationRepository;
 import com.makersacademy.acebook.repository.PostRepository;
@@ -36,7 +37,11 @@ public class ListenerConfig {
         CommentListener.setNotificationRepository(notificationRepository);
 
         CommentLikeListener.setUserRepository(userRepository);
-        CommentLikeListener.setCommentRepository(commentRepository);
         CommentLikeListener.setNotificationRepository(notificationRepository);
+        CommentLikeListener.setCommentRepository(commentRepository);
+
+        PostLikeListener.setUserRepository(userRepository);
+        PostLikeListener.setNotificationRepository(notificationRepository);
+        PostLikeListener.setPostRepository(postRepository);
     }
 }
