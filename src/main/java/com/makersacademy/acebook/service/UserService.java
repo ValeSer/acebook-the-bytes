@@ -29,6 +29,10 @@ public class UserService {
 
     }
 
+    public User getUserProfileById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public String getAuthenticatedUserEmail() {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
@@ -70,18 +74,10 @@ public class UserService {
     @Transactional
     public void updateProfilePictureFromUrl(String profilePhotoUrl) throws IOException {
         String username = getAuthenticatedUserEmail();  // Get current user email
-
-
         User existingUser = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Download and save the image
-        String savedPath = downloadImage(profilePhotoUrl);
-
-
-        existingUser.setProfilePhotoUrl(savedPath);
-
-
+        existingUser.setProfilePhotoUrl(profilePhotoUrl);
         userRepository.save(existingUser);
     }
 

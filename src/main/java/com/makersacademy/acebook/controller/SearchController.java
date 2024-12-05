@@ -66,8 +66,8 @@ public class SearchController {
     public ModelAndView viewSearchResults(@RequestParam(value = "nav-search", required = false) String query) {
         // Creazione della vista
         ModelAndView searchView = new ModelAndView("/search/index");
+        User currentUser = userService.getUserProfile();
 
-        // Recupero dell'utente autenticato
         String username = userService.getAuthenticatedUserEmail();
         User currentUser = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -99,12 +99,17 @@ public class SearchController {
             }
         }
 
+
+        searchView.addObject("users", allUsers);
+        searchView.addObject("friendshipsExist", friendshipsExist);
+        searchView.addObject("currentUserId", userId);
         searchView.addObject("users", filteredUsers);
         searchView.addObject("friendshipStatuses", friendshipStatuses);
         searchView.addObject("currentUserId", currentUserId);
         searchView.addObject("currentUser", currentUser);
         searchView.addObject("post", new Post());
 //        searchView.addObject("friendshipsExist", friendshipsExist);
+
 
         return searchView;
     }

@@ -15,14 +15,15 @@
   <script src="/js/main.js" defer></script>
 </head>
 <body>
-  <div th:insert="fragments/nav :: navigation"></div>
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
   <h1 class="page_header search_header">Search Results</h1>
 
   <div class="results-container search_results_container">
     <div th:each="user : ${users}" class="card search_results_card">
       <div>
 
-        <p th:text="${user.firstName + ' ' + user.lastName}"></p>
+        <a th:href="@{/profile/{id}(id=${user.id})}"><p th:text="${user.firstName + ' ' + user.lastName}"></p></a>
+
         <!-- Hardcoded - to be replaced later -->
         <p class="search_mutual">3 mutual friends</p>
 

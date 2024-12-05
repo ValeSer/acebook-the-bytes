@@ -7,4 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     boolean existsByUserIdAndId(Long userId, Long id);
+
+    Iterable<Post> getPostsByUserIdOrderByCreatedAtDesc(Long userId);
 }

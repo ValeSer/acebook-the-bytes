@@ -5,149 +5,237 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/posts.css" />
     <link rel="stylesheet" href="/css/profile.css" />
     <link rel="stylesheet" href="/css/nav.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
+    <script src="/js/newPost.js" defer></script>
+    <script src="/js/main.js" defer></script>
+    <script src="/js/commentSend.js" defer></script>
 </head>
 <body>
-<div th:insert="fragments/nav :: navigation"></div>
-<h1 class="page_header posts_header">My Profile</h1>
+    <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
 
-<!-- Profile Picture Section -->
-<div class="profile-header">
-    <div class="profile-photo-container">
-        <img
-                th:src="${user.profilePhotoUrl}"
-                th:alt="'Profile photo of ' + ${user.firstName} + ' ' + ${user.lastName}"
-                width="200"
-                height="200"
-        />
-        <button class="edit-button" onclick="togglePhotoUpdateForm(event)">
-            <i class="fa fa-edit"></i>
-        </button>
-
-        <!-- Hidden form for updating profile picture -->
-        <form id="photoUpdateForm" th:action="@{/users/update}" th:object="${user}" method="post" class="hidden">
-            <input
-                    type="url"
-                    id="profilePhotoUrl"
-                    th:field="*{profilePhotoUrl}"
-                    placeholder="Enter new profile picture URL"
-                    required
-
+    <!-- Profile Picture Section -->
+    <div class="profile-header">
+        <div class="profile-photo-container">
+            <img
+                    th:src="${profileUser.profilePhotoUrl}"
+                    th:alt="'Profile photo of ' + ${profileUser.firstName} + ' ' + ${profileUser.lastName}"
             />
-            <button type="submit" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
-                    Update
-                    </button>
-            <button type="button" onclick="cancelPhotoUpdateForm(event)" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
-                    Cancel
+            <button th:if="${profileUserId == currentUserId}" class="edit-button" onclick="togglePhotoUpdateForm(event)">
+                <i class="fa fa-edit"></i>
             </button>
+
+            <!-- Hidden form for updating profile picture -->
+            <form id="photoUpdateForm" th:action="@{/uploadProfilePic}" th:object="${user}" method="post" class="hidden" enctype="multipart/form-data">
+                <input
+                        type="file"
+                        id="profilePhotoUrl"
+                        th:field="*{profilePhotoUrl}"
+                        placeholder="Enter new profile picture URL"
+                        required
+                />
+                <button type="submit" class="clickable" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
+                        Update
+                        </button>
+                <button type="button" class="clickable" onclick="cancelPhotoUpdateForm(event)" style="background-color: var(--acebook-blue); color: white; border: none; padding: 5px 5px;border-radius: 5px;">
+                        Cancel
+                </button>
+            </form>
+        </div>
+        <h1 th:text="${#strings.capitalize(profileUser.firstName)} + ' ' + ${#strings.capitalize(profileUser.lastName)}" class="page_header profile_name_header"></h1>
+        <p th:text="${numFriends} + ' friends'" class="profile_num_friends"></p>
+    </div>
+
+    <!-- Horizontal Divider -->
+    <div class="divider"></div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" data-target="posts">Posts</div>
+        <div class="tab" data-target="about">About</div>
+        <div class="tab" data-target="friends">Friends</div>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="posts" class="tab-content active">
+        <div class="bio_post_cards_container posts_container results-container">
+            <div class="card post_card">
+                <form action="#" th:action="@{/status/update(page='profile')}" th:method="post" id="statusForm">
+                    <input type="text" name="status" placeholder="What's on your mind...?" class="status_form_input" required />
+                    <input type="submit" style="display: none;" />
+                </form>
+            </div>
+
+            <div th:each="post: ${posts}" class="card post_card">
+                <div class="post_card_user_details">
+                    <img
+                            class="post_card_user_img"
+                            th:src="${profileUser.profilePhotoUrl}"
+                    />
+                    <div class="post_card_user_text">
+                        <p th:text="${#strings.capitalize(profileUser.firstName) + ' ' + #strings.capitalize(profileUser.lastName)}" class="post_card_user_name"></p>
+                        <p th:text="${post.createdAt}" class="post_card_user_date"></p>
+                    </div>
+                </div>
+
+                <form th:if="${post.userId == currentUserId}" action="#" th:action="@{/post/{id}(id=${post.id})}" th:method="delete" class="post_card_delete_container">
+                    <input type="submit" value="Delete" class="post_card_delete_btn clickable" />
+                </form>
+
+                <div class="post_card_img_container">
+                    <img th:if="${post.photoUrl != null and post.photoUrl != ''}" th:src="${post.photoUrl}" class="post_card_img" />
+                </div>
+                <p th:text="${post.content}"></p>
+                <hr class="hr_line">
+                <div class="post_card_likes_comments_totals">
+                    <div class="post_card_icon_and_total">
+                        <button class="post_like_button like_button clickable"
+                                th:data-post-id="${post.id}"
+                                th:data-liked="${likedPosts[post.id]}">
+                            <i class="fa" th:class="${likedPosts[post.id]} ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
+                        </button>
+                        <div th:text="${postLikes[post.id].size()}" th:id="'post_like_count_' + ${post.id}" class="post_like_count like_count"></div>
+                    </div>
+                    <div class="post_card_icon_and_total">
+                        <div><i class="fa-regular fa-comment post_card_comment"></i></div>
+                        <div th:text="${postCommentsDetails[post.id].size()}"></div>
+                    </div>
+                </div>
+
+                <div th:each="postComment: ${postCommentsDetails[post.id]}" class="comment_container">
+                    <div class="comment_details_container">
+                        <div class="comment_user_details">
+                            <img th:src="${postComment['profilePhotoUrl']}" class="post_comment_photo" />
+                            <a th:href="@{/profile/{id}(id=${postComment['id']})}"><p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p></a>
+                        </div>
+                        <form th:if="${postComment['commenterId'] == profileUserId}" action="#" th:action="@{/comment/{id}(id=${postComment['id']})}" th:method="delete">
+                            <input type="submit" value="Delete" class="comment_delete_btn clickable"/>
+                        </form>
+                    </div>
+                    <div class="comment_content_and_likes">
+                        <p th:text="${postComment['content']}" class="comment_content"></p>
+                        <div class="comment_likes">
+                            <button class="comment_like_button like_button clickable"
+                                    th:data-comment-id="${postComment['id']}"
+                                    th:data-comment-liked="${likedComments[postComment['id']]}">
+                                <i class="fa" th:class="${likedComments[postComment['id']]} ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"></i>
+                            </button>
+                            <div th:text="${commentLikes[postComment['id']].size()}" th:id="'comment_like_count_' + ${postComment['id']}" class="comment_like_count like_count"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="#" th:action="@{/posts/{id}/comments/new(id=${post.id})}" th:object="${comment}" method="post" class="comment_form">
+                    <div class="comment_form_container">
+                        <input id="comment" type="text" th:field="*{content}" placeholder="Add a comment..." />
+                        <button type="button" id="comment_submit">
+                            <i class="fa-regular fa-paper-plane comment_plane clickable"></i>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="about" class="tab-content">
+        <div class="card bio_card">
+            <p th:text="${user.bio != null ? user.bio : 'No bio available'}" class="profile_bio">No bio available</p>
+        </div>
+        <div class="profile_bio_btn_container">
+            <button class="profile_bio_btn" type="button" onclick="toggleBioForm()">Edit Bio</button>
+        </div>
+
+        <!-- Hidden form for editing bio -->
+        <form id="bioForm" th:action="@{/users/update}" th:object="${user}" method="post" class="hidden">
+            <textarea
+                    id="bio"
+                    th:field="*{bio}"
+                    placeholder="Enter your bio"
+                    required
+                    maxlength="300"
+                    ></textarea>
+            <div class="bio_form_buttons">
+                <button type="submit" style="background-color: var(--acebook-blue); color: white; border-radius: 5px; padding: 5px 5px; font-size: 14px; cursor: pointer;">
+                    Save
+                </button>
+                <button type="button" onclick="toggleBioForm()">Cancel</button>
+            </div>
         </form>
     </div>
-    <h1 th:text="${#strings.capitalize(user.firstName)} + ' ' + ${#strings.capitalize(user.lastName)}">User Full Name</h1>
-    <p th:text="${user.username}">@username</p>
-</div>
 
-<!-- Horizontal Divider -->
-<div class="divider"></div>
+    <div id="friends" class="tab-content">
+        <div class="bio_friend_cards_container">
+            <div th:each="friend: ${friends}">
+                <div class="card bio_friend_card">
+                    <a th:href="@{/profile/{id}(id=${friend.id})}"><div th:text="${friend.firstName} + ' ' + ${friend.lastName}" class="bio_friend_name clickable"></div></a>
+                    <button class="blue_btn clickable">Message</button>
+                </div>
+            </div>
+        </div>
 
-<!-- Tabs -->
-<div class="tabs">
-    <div class="tab active" data-target="posts">Posts</div>
-    <div class="tab" data-target="about">About</div>
-    <div class="tab" data-target="friends">Friends</div>
-</div>
+    </div>
 
-<!-- Tab Content -->
-<div id="posts" class="tab-content active">
-    <button onclick="window.location.href='/posts'" style="background-color: var(--acebook-blue); color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">
-        Go to Posts
-    </button>
-</div>
+    <div th:insert="posts/new_post :: newPost"></div>
 
+    <script>
 
-<div id="about" class="tab-content">
-    <h2>About</h2>
-    <p><strong>Bio:</strong> <span th:text="${user.bio != null ? user.bio : 'No bio available'}">No bio available</span></p>
-    <button type="button" onclick="toggleBioForm()">Edit Bio</button>
+        // Tab Functionality
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.addEventListener("click", function () {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
 
-    <!-- Hidden form for editing bio -->
-    <form id="bioForm" th:action="@{/users/update}" th:object="${user}" method="post" class="hidden">
-        <textarea
-                id="bio"
-                th:field="*{bio}"
-                placeholder="Enter your bio"
-                required
-                maxlength="300"
-                style="margin-top: 40px;"></textarea>
-        <button type="submit" style="background-color: var(--acebook-blue); color: white; border-radius: 5px; padding: 5px 5px; font-size: 14px; cursor: pointer;">
-            Save
-        </button>
-        <button type="button" onclick="toggleBioForm()">Cancel</button>
-    </form>
-</div>
+                // Add active class to the selected tab and its content
+                this.classList.add("active");
+                document.getElementById(this.getAttribute("data-target")).classList.add("active");
+            });
 
-<div id="friends" class="tab-content">
-    <h2>Friends</h2>
-    <a href="/friends" style="background-color: var(--acebook-blue); color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;" class="blue_btn">Your Friendship Requests </a>
-    <p>No friends to display.</p>
-</div>
+        // Toggle Photo Update Form
+    function togglePhotoUpdateForm(event) {
+        event.preventDefault();
+        const form = document.getElementById("photoUpdateForm");
+        const button = document.querySelector(".edit-button");
 
-<script>
+         // Toggle the visibility of the form
+            form.classList.toggle("hidden");
 
-    // Tab Functionality
-    document.querySelectorAll(".tab").forEach(tab => {
-        tab.addEventListener("click", function () {
-            // Remove active class from all tabs and contents
-            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
-
-            // Add active class to the selected tab and its content
-            this.classList.add("active");
-            document.getElementById(this.getAttribute("data-target")).classList.add("active");
-        });
-    });
-
-    // Toggle Photo Update Form
-function togglePhotoUpdateForm(event) {
-    event.preventDefault();
-    const form = document.getElementById("photoUpdateForm");
-    const button = document.querySelector(".edit-button");
-
-     // Toggle the visibility of the form
-        form.classList.toggle("hidden");
-
-        // If the form is shown, hide the edit button
-        if (!form.classList.contains("hidden")) {
-            button.style.display = "none"; // Hide the button
-        } else {
-            button.style.display = "inline-block"; // Show the button again
-        }
+            // If the form is shown, hide the edit button
+            if (!form.classList.contains("hidden")) {
+                button.style.display = "none"; // Hide the button
+            } else {
+                button.style.display = "inline-block"; // Show the button again
+            }
 
 
-}
+    }
 
-function toggleBioForm(event) {
-    if (event) event.preventDefault();
-    const bioForm = document.getElementById("bioForm");
-    const editBioButton = document.querySelector("button[onclick='toggleBioForm()']");
+    function toggleBioForm(event) {
+        if (event) event.preventDefault();
+        const bioForm = document.getElementById("bioForm");
+        const editBioButton = document.querySelector("button[onclick='toggleBioForm()']");
 
-    const isHidden = bioForm.classList.contains("hidden");
-    bioForm.classList.toggle("hidden", !isHidden);
-    editBioButton.style.display = isHidden ? "none" : "inline-block";
-}
+        const isHidden = bioForm.classList.contains("hidden");
+        bioForm.classList.toggle("hidden", !isHidden);
+        bioForm.classList.toggle("show_bio_form", isHidden);
+        editBioButton.style.display = isHidden ? "none" : "inline-block";
+    }
 
-// Cancel Photo Update Form
-function cancelPhotoUpdateForm(event) {
-    event.preventDefault();
-    const form = document.getElementById("photoUpdateForm");
-    const button = document.querySelector(".edit-button");
-    form.classList.add("hidden");  // Hide the form
-    button.style.display = "inline-block";  // Show the button
-}
+    // Cancel Photo Update Form
+    function cancelPhotoUpdateForm(event) {
+        event.preventDefault();
+        const form = document.getElementById("photoUpdateForm");
+        const button = document.querySelector(".edit-button");
+        form.classList.add("hidden");  // Hide the form
+        button.style.display = "inline-block";  // Show the button
+    }
 
-</script>
+    </script>
 
 
 </body>

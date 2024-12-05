@@ -14,8 +14,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-<div th:insert="fragments/nav :: navigation"></div>
-<h1 class="page_header">Friend Requests</h1>
+
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
 
 <div class="results-container">
   <div th:each="request : ${friendRequests}" class="card friend-request-card">
@@ -38,7 +38,11 @@
 
 <div th:if="${friendRequests.size() == 0}" class="no-requests-container">
   <p class="no-requests-text">There are no pending friend requests. Nobody wants to be your friend (Sorry) <span class="emoji">😢</span></p>
+
 </div>
+  
+ 
+  <div th:insert="posts/new_post :: newPost"></div>
 
 </body>
 </html>
