@@ -16,10 +16,25 @@
 </head>
 <body>
   <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
-  <h1>Notifications</h1>
-  <div th:each="notification: ${notifications}">
-    <div th:text="${notification.content}"></div>
+
+  <div class="results-container notifications_container">
+
+    <div th:if="${unreadNotifications.isEmpty()}" class="notifications_msg">
+      <p>No unread notifications.</p>
+    </div>
+
+    <div th:each="notification: ${unreadNotifications}">
+      <div class="card post_card notification_card">
+        <form th:action="@{/notifications/{id}(id=${notification.id})}" method="post">
+          <button type="submit" class="fa-regular fa-circle-xmark notification_read clickable"></button>
+        </form>
+        <a th:href="${redirectMap[notification.id]}"><div th:text="${notification.content}" class="notification_content clickable"></div></a>
+
+      </div>
+    </div>
+
   </div>
+
   <div th:insert="posts/new_post :: newPost"></div>
 </body>
 </html>

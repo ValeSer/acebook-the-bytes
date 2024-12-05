@@ -1,0 +1,31 @@
+.notifications_container {
+    max-width: 32rem;
+    margin: 4rem auto;
+    gap: 1rem;
+}
+
+.notification_card {
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.notification_read {
+    all: unset;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    color: var(--acebook-blue);
+}
+
+.notification_content {
+    max-width: 90%;
+}
+
+.notifications_msg {
+    text-align: center;
+}
+
+.notification_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
