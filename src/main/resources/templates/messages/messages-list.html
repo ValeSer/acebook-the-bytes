@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Message List</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>Conversations</h1>
+  <div>
+    <ul class="list-group">
+      <!-- Iterate over the conversation partners -->
+      <li th:each="partner : ${conversationPartners}" class="list-group-item">
+        <a th:href="@{/messages/{username}(receiverUsername=${partner.username})}" th:text="${partner.username}"></a>
+      </li>
+    </ul>
+  </div>
+  <br>
+  <a href="/" class="btn btn-primary">Back to Home</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Conversation with <span th:text="${receiverUsername}"></span></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Conversation with <span th:text="${receiverUsername}"></span></h1>
+
+    <!-- Display all messages -->
+    <div class="messages">
+        <ul class="list-group">
+            <li th:each="message : ${conversation}" class="list-group-item">
+                <div>
+                    <strong th:text="${message.sender.username}"></strong> said:
+                    <p th:text="${message.content}"></p>
+                </div>
+                <small th:text="${#dates.format(message.timestamp, 'yyyy-MM-dd HH:mm')}"></small>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Form to send a new message -->
+    <form action="#" th:action="@{/messages/{receiverUsername}(receiverUsername=${receiverUsername})}" method="post">
+        <div class="form-group">
+            <label for="content">Your message:</label>
+            <textarea id="content" name="content" class="form-control" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+
+    <br>
+    <a href="/messages" class="btn btn-secondary">Back to Conversations</a>
+</div>
+</body>
+</html>

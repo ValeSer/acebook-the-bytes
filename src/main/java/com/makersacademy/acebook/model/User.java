@@ -4,6 +4,8 @@ import com.makersacademy.acebook.repository.UserRepository;
 import jakarta.persistence.*;
 import lombok.Data;
 
+
+
 import static java.lang.Boolean.TRUE;
 
 @Data
@@ -21,6 +23,8 @@ public class User {
     private String bio;
     private String firstName;
     private String lastName;
+
+
 
 
     public User() {this.enabled = TRUE;}
