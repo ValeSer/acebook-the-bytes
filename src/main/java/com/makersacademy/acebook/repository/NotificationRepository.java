@@ -7,4 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     Iterable<Notification> findByReceiverId(Long receiverId);
+
+    Iterable<Notification> findByReceiverIdAndIsReadFalse(Long receiverId);
 }

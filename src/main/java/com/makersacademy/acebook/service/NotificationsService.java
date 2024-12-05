@@ -13,4 +13,8 @@ public class NotificationsService {
     public Iterable<Notification> getNotificationsForUser(Long userId) {
         return notificationRepository.findByReceiverId(userId);
     }
+
+    public Iterable<Notification> getUnreadNotificationsForUser(Long userId) {
+        return notificationRepository.findByReceiverIdAndIsReadFalse(userId);
+    }
 }
