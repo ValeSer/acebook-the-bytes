@@ -20,16 +20,24 @@
 
   <div class="results-container search_results_container">
     <div th:each="user : ${users}" class="card search_results_card">
-      <div>
+      <div class="search_card_details">
 
-        <a th:href="@{/profile/{id}(id=${user.id})}"><p th:text="${user.firstName + ' ' + user.lastName}"></p></a>
+        <img th:src="${user.profilePhotoUrl}" class="card_user_img" />
 
-        <!-- Hardcoded - to be replaced later -->
-        <p class="search_mutual">3 mutual friends</p>
+        <div>
+          <a th:href="@{/profile/{id}(id=${user.id})}"><p th:text="${user.firstName + ' ' + user.lastName}"></p></a>
+
+          <!-- Hardcoded - to be replaced later -->
+          <p class="search_mutual">
+            <span th:text="${mutualFriendsCount[user.id]}" ></span>
+            <span th:text="${mutualFriendsCount[user.id] > 1 ? ' mutual friends' : ' mutual friend'}"></span>
+          </p>
+        </div>
 
       </div>
       <form action="/friends/new" method="post">
         <input type="hidden" name="receiverId" th:value="${user.id}" />
+        <input type="hidden" name="page" th:value="search" />
 
         <!-- Mostra il messaggio se l'amicizia è "accepted" -->
         <p th:if="${friendshipStatuses[user.id] == 'accepted'}">You are already friends</p>

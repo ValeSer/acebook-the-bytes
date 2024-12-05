@@ -74,6 +74,7 @@ public class SearchController {
         Long currentUserId = userDetails.getId();
 
         Iterable<User> allUsers = userService.getUsersBySearchTerm(query);
+        Map<Long, Integer> mutualFriendsCountMap = new HashMap<>();
 
         List<User> filteredUsers = new ArrayList<>();
         for (User user : allUsers) {
@@ -86,6 +87,9 @@ public class SearchController {
         boolean friendshipsExist = false;
 
         for (User user : filteredUsers) {
+            int mutualFriendsCount = friendshipRepository.countMutualFriends(currentUserId, user.getId());
+            mutualFriendsCountMap.put(user.getId(), mutualFriendsCount);
+
             Friendship friendship = friendshipRepository.findBySenderIdAndReceiverId(currentUserId, user.getId());
             if (friendship == null) {
                 friendship = friendshipRepository.findBySenderIdAndReceiverId(user.getId(), currentUserId);
@@ -100,17 +104,15 @@ public class SearchController {
         }
 
 
-        searchView.addObject("users", allUsers);
+//        searchView.addObject("users", allUsers);
         searchView.addObject("friendshipsExist", friendshipsExist);
         searchView.addObject("currentUserId", currentUserId);
         searchView.addObject("users", filteredUsers);
         searchView.addObject("friendshipStatuses", friendshipStatuses);
-        searchView.addObject("currentUserId", currentUserId);
         searchView.addObject("currentUser", currentUser);
         searchView.addObject("post", new Post());
-//        searchView.addObject("friendshipsExist", friendshipsExist);
-
-
+        searchView.addObject("mutualFriendsCount", mutualFriendsCountMap);
+        //        searchView.addObject("friendshipsExist", friendshipsExist);
         return searchView;
     }
 

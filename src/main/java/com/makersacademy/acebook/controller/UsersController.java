@@ -1,6 +1,7 @@
 package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.*;
+import com.makersacademy.acebook.repository.FriendshipRepository;
 import com.makersacademy.acebook.service.*;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class UsersController {
     CommentLikesService commentLikesService;
     @Autowired
     PostsController postsController;
+    @Autowired
+    FriendshipRepository friendshipRepository;
+
 
     @GetMapping("/profile/{id}")
     public ModelAndView getUserProfile(@PathVariable Long id) {
@@ -94,6 +98,25 @@ public class UsersController {
             }
         }
 
+        Map<Long, String> friendshipMap = new HashMap<>();
+
+        for (User friend : friends.values()) {
+            Friendship friendship = friendshipRepository.findBySenderIdAndReceiverId(loggedInUserId, friend.getId());
+            if (friendship == null) {
+                friendship = friendshipRepository.findBySenderIdAndReceiverId(friend.getId(), loggedInUserId);
+            }
+
+            if (friendship == null) {
+                friendshipMap.put(friend.getId(), "not friends");
+            } else if ("confirmed".equals(friendship.getStatus())) {
+                friendshipMap.put(friend.getId(), "friends");
+            } else if ("pending".equals(friendship.getStatus())) {
+                friendshipMap.put(friend.getId(), "pending");
+            } else if ("blocked".equals(friendship.getStatus())) {
+                friendshipMap.put(friend.getId(), "not friends");
+            }
+        }
+
         modelAndView.addObject("profileUserId", id);
         modelAndView.addObject("profileUser", profileUser);
         modelAndView.addObject("currentUserId", loggedInUserId);
@@ -107,6 +130,7 @@ public class UsersController {
         modelAndView.addObject("likedComments", userLikedCommentsMap);
         modelAndView.addObject("commentLikes", commentLikeMap);
         modelAndView.addObject("formattedTimestamps", formattedTimestamps);
+        modelAndView.addObject("friendsWithLoggedInUser", friendshipMap);
         modelAndView.addObject("post", new Post());
         modelAndView.addObject("comment", new Comment());
 

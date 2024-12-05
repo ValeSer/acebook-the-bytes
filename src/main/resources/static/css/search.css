@@ -26,3 +26,8 @@
 .search_no_results_text {
     text-align: center;
 }
+
+.search_card_details {
+    display: flex;
+    gap: 1rem;
+}
