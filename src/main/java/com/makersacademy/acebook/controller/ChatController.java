@@ -62,6 +62,9 @@ public class ChatController {
     @GetMapping("/chat/{id}")
     public String showAllMessages(Model model, @PathVariable Long id) {
         Iterable<Message> messages = messageRepository.findByChatIdOrderByCreatedAtAsc(id);
+        Message NewMessage = new Message();
+        model.addAttribute("message", NewMessage);
+        model.addAttribute("chatId", id);
         model.addAttribute("allMessagesFromBothUsers", messages);
         return "chats/show";
     }

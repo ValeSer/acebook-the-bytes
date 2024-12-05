@@ -16,14 +16,18 @@
   <script src="/js/commentSend.js" defer></script>
 </head>
 <body>
-<div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
 
 
-<div th:each="message : ${allMessagesFromBothUsers}">
-  <div>
-    <p th:text="${message.message}"></p>
+  <div th:each="message : ${allMessagesFromBothUsers}">
+    <div>
+      <p th:text="${message.message}"></p>
+    </div>
   </div>
-</div>
 
+  <form th:action="@{/chat/{id}(id=${chatId})}" th:method="post" th:object="${message}">
+    <input type="text" th:value="${messageContent}" name="messageContent" placeholder="Write your message here" required>
+    <button type="submit" class="clickable red_btn">Send Message</button>
+  </form>
 </body>
 </html>
