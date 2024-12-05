@@ -25,28 +25,20 @@ import java.util.Optional;
 public class PostsController {
     @Autowired
     PostRepository repository;
-
     @Autowired
     PostsService postsService;
-
     @Autowired
     UserService userService;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     CommentsService commentsService;
-
     @Autowired
     PostLikesService postLikesService;
-
     @Autowired
     CloudinaryService cloudinaryService;
-  
     @Autowired
     CommentLikesService commentLikesService;
-
     @Autowired
     PostRepository postRepository;
 
@@ -134,27 +126,7 @@ public class PostsController {
 
     @PostMapping("/posts")
     public RedirectView create(@RequestParam String content, @RequestParam(value = "post_photo", required = false) MultipartFile photo) {
-        Post post = new Post();
-        post.setContent(content);
-
-        String photoUrl = null;
-        if(photo != null && !photo.isEmpty()){
-            try {
-                photoUrl = cloudinaryService.uploadImage(photo);
-                post.setPhotoUrl(photoUrl);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-        post.setPhotoUrl(photoUrl);
-        String username = userService.getAuthenticatedUserEmail();
-        User userDetails = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Long id = userDetails.getId();
-        post.setUserId(id);
-        post.setCreatedAt(LocalDateTime.now());
-
-        repository.save(post);
+        postsService.createPost(content, photo);
         return new RedirectView("/posts");
     }
 

@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
     <script src="/js/newPost.js" defer></script>
     <script src="/js/main.js" defer></script>
+    <script src="/js/commentSend.js" defer></script>
 </head>
 <body>
     <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
@@ -61,6 +62,13 @@
     <!-- Tab Content -->
     <div id="posts" class="tab-content active">
         <div class="bio_post_cards_container posts_container results-container">
+            <div class="card post_card">
+                <form action="#" th:action="@{/status/update(page='profile')}" th:method="post" id="statusForm">
+                    <input type="text" name="status" placeholder="What's on your mind...?" class="status_form_input" required />
+                    <input type="submit" style="display: none;" />
+                </form>
+            </div>
+
             <div th:each="post: ${posts}" class="card post_card">
                 <div class="post_card_user_details">
                     <img

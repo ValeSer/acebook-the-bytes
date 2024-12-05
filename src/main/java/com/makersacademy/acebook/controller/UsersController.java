@@ -126,6 +126,24 @@ public class UsersController {
         }
     }
 
+    @PostMapping("/status/update")
+    public RedirectView updateStatus(@RequestParam("status") String status, @RequestParam("page") String page) {
+        User updatedUser = new User();
+        updatedUser.setMyStatus(status);
+
+        User loggedInUser = userService.getUserProfile();
+        Long loggedInUserId = loggedInUser.getId();
+
+        userService.updateUser(updatedUser);
+
+        postsService.createPost(status, null);
+
+        if ("profile".equals(page)) {
+            return new RedirectView("/profile/" + loggedInUserId);
+        } else {
+            return new RedirectView("/posts");
+        }
+    }
 
     @GetMapping("/users/after-login")
     public RedirectView afterLogin() {

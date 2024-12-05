@@ -13,12 +13,19 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
         <script src="/js/newPost.js" defer></script>
         <script src="/js/main.js" defer></script>
+        <script src="/js/commentSend.js" defer></script>
     </head>
     <body>
-    <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
-    <h1 class="page_header posts_header">Posts</h1>
+        <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
 
         <div class="results-container posts_container">
+            <div class="card post_card">
+                <form action="#" th:action="@{/status/update(page='posts')}" th:method="post" id="statusForm">
+                    <input type="text" name="status" placeholder="What's on your mind...?" class="status_form_input" required />
+                    <input type="submit" style="display: none;" />
+                </form>
+            </div>
+
             <div th:each="post: ${posts}" class="card post_card">
                 <div>
 

@@ -136,6 +136,16 @@ a {
     }
 }
 
+.status_form_input {
+    all: unset;
+    background-color: var(--light-grey);
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
 
 
 /* Optional: Styling for the edit button */
