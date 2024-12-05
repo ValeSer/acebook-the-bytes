@@ -39,14 +39,6 @@
     gap: 2rem;
 }
 
-.post_card_user_img {
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center;
-}
-
 .post_card_user_text {
     display: flex;
     flex-direction: column;
@@ -130,7 +122,6 @@
 .post_comment_photo {
     height: 2rem;
     width: 2rem;
-    border-radius: 50%;
 }
 
 .comment_content_and_likes {
