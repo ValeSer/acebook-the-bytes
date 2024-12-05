@@ -25,7 +25,10 @@
         <a th:href="@{/profile/{id}(id=${user.id})}"><p th:text="${user.firstName + ' ' + user.lastName}"></p></a>
 
         <!-- Hardcoded - to be replaced later -->
-        <p class="search_mutual">3 mutual friends</p>
+        <p class="search_mutual">
+          <span th:text="${mutualFriendsCount[user.id]}" ></span>
+          <span th:text="${mutualFriendsCount[user.id] > 1 ? ' mutual friends' : ' mutual friend'}"></span>
+        </p>
 
       </div>
       <form action="/friends/new" method="post">

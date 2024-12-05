@@ -33,4 +33,8 @@ public class FriendshipsService {
         }
         return friendsMap;
     }
+
+    public int getMutualFriends(Long userId, Long searchCardUserId) {
+        return friendshipRepository.countMutualFriends(userId, searchCardUserId);
+    }
 }
