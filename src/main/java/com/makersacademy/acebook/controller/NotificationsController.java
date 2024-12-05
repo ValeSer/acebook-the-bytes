@@ -54,7 +54,7 @@ public class NotificationsController {
             } else if (type.equals("friend_request")) {
                 redirectUrl += "/friends";
             } else if (type.equals("message")) {
-                redirectUrl += "/chats" + notification.getChatId();
+                redirectUrl += "/chat/" + notification.getChatId();
             } else {
                 redirectUrl += "/posts";
             }

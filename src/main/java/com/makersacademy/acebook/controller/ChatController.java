@@ -2,6 +2,7 @@ package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.model.Chat;
 import com.makersacademy.acebook.model.Message;
+import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.ChatRepository;
 import com.makersacademy.acebook.repository.MessageRepository;
@@ -38,7 +39,7 @@ public class ChatController {
 
     @GetMapping("/chats")
     public String allCurrentUserChats(Model model) {
-
+        User user = userService.getUserProfile();
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -53,6 +54,10 @@ public class ChatController {
                 otherPersonsIdsAndChatId.put(chat.getId(), userService.getUserProfileById(chat.getUser1Id()));
                 }
             }
+
+        model.addAttribute("post", new Post());
+        model.addAttribute("currentUserId", userId);
+        model.addAttribute("currentUser", user);
         model.addAttribute("allChats", getChatsForCurrentUser);
         model.addAttribute("allChatsIdsAndOtherPersonIds", otherPersonsIdsAndChatId);
         return "chats/index";
@@ -61,8 +66,18 @@ public class ChatController {
 
     @GetMapping("/chat/{id}")
     public String showAllMessages(Model model, @PathVariable Long id) {
+        User user = userService.getUserProfile();
+        String username = userService.getAuthenticatedUserEmail();
+        User userDetails = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Long userId = userDetails.getId();
+
         Iterable<Message> messages = messageRepository.findByChatIdOrderByCreatedAtAsc(id);
         Message NewMessage = new Message();
+
+        model.addAttribute("post", new Post());
+        model.addAttribute("currentUserId", userId);
+        model.addAttribute("currentUser", user);
         model.addAttribute("message", NewMessage);
         model.addAttribute("chatId", id);
         model.addAttribute("allMessagesFromBothUsers", messages);

@@ -16,12 +16,13 @@
   <script src="/js/commentSend.js" defer></script>
 </head>
 <body>
-<div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
-<div th:each="chat : ${allChats}">
-  <div>
-    <a th:href="@{/chat/{id}(id=${chat.id})}" th:text="${allChatsIdsAndOtherPersonIds[chat.id].firstName}"></a>
+  <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
+  <div th:each="chat : ${allChats}">
+    <div>
+      <a th:href="@{/chat/{id}(id=${chat.id})}" th:text="${allChatsIdsAndOtherPersonIds[chat.id].firstName}"></a>
+    </div>
   </div>
-</div>
 
+  <div th:insert="posts/new_post :: newPost"></div>
 </body>
 </html>
