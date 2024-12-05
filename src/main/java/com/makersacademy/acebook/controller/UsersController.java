@@ -41,7 +41,10 @@ public class UsersController {
     @Autowired
     CommentLikesService commentLikesService;
     @Autowired
+    PostsController postsController;
+    @Autowired
     FriendshipRepository friendshipRepository;
+
 
     @GetMapping("/profile/{id}")
     public ModelAndView getUserProfile(@PathVariable Long id) {
@@ -70,6 +73,7 @@ public class UsersController {
         Map<Long, Iterable<PostLike>> postLikeMap = new HashMap<>();
         Map<Long, Iterable<CommentLike>> commentLikeMap = new HashMap<>();
         Map<Long, Boolean> userLikedCommentsMap = new HashMap<>();
+        Map<Long, String> formattedTimestamps = new HashMap<>();
 
         for (Post post : posts) {
             Iterable<PostLike> postLikes = postLikesService.getLikesByPostId(post.getId());
@@ -80,6 +84,8 @@ public class UsersController {
 
             List<Map<String, Object>> commentsWithDetails = commentsService.getCommentsDetailsByPostId(post.getId());
             postCommentMapWithDetails.put(post.getId(), commentsWithDetails);
+
+            formattedTimestamps.put(post.getId(), postsController.getFormattedTimestamp(post.getCreatedAt()));
 
             Iterable<Comment> comments = commentsService.getCommentsByPostId(post.getId());
             for (Comment comment: comments) {
@@ -123,6 +129,7 @@ public class UsersController {
         modelAndView.addObject("postCommentsDetails", postCommentMapWithDetails);
         modelAndView.addObject("likedComments", userLikedCommentsMap);
         modelAndView.addObject("commentLikes", commentLikeMap);
+        modelAndView.addObject("formattedTimestamps", formattedTimestamps);
         modelAndView.addObject("friendsWithLoggedInUser", friendshipMap);
         modelAndView.addObject("post", new Post());
         modelAndView.addObject("comment", new Comment());

@@ -173,7 +173,7 @@ public class PostsController {
         return "posts/show";
     }
 
-    private String getFormattedTimestamp(LocalDateTime createdAt) {
+    public String getFormattedTimestamp(LocalDateTime createdAt) {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(createdAt, now);
 
