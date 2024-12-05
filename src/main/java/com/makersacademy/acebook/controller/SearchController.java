@@ -69,9 +69,9 @@ public class SearchController {
         User currentUser = userService.getUserProfile();
 
         String username = userService.getAuthenticatedUserEmail();
-        User currentUser = userRepository.findUserByUsername(username)
+        User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        Long currentUserId = currentUser.getId();
+        Long currentUserId = userDetails.getId();
 
         Iterable<User> allUsers = userService.getUsersBySearchTerm(query);
 
@@ -102,7 +102,7 @@ public class SearchController {
 
         searchView.addObject("users", allUsers);
         searchView.addObject("friendshipsExist", friendshipsExist);
-        searchView.addObject("currentUserId", userId);
+        searchView.addObject("currentUserId", currentUserId);
         searchView.addObject("users", filteredUsers);
         searchView.addObject("friendshipStatuses", friendshipStatuses);
         searchView.addObject("currentUserId", currentUserId);
