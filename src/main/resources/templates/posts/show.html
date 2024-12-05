@@ -28,7 +28,7 @@
         />
         <div class="post_card_user_text">
                     <p th:text="${#strings.capitalize(user.firstName) + ' ' + #strings.capitalize(user.lastName)}" class="post_card_user_name"></p>
-          <p th:text="${post.createdAt}" class="post_card_user_date"></p>
+          <p th:text="${formattedTimestamp}" class="post_card_user_date"></p>
         </div>
       </div>
 

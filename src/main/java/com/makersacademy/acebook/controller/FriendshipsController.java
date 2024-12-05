@@ -1,5 +1,6 @@
 package com.makersacademy.acebook.controller;
 
+import com.makersacademy.acebook.dto.FriendRequestDto;
 import com.makersacademy.acebook.model.Friendship;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class FriendshipsController {
@@ -33,22 +36,42 @@ public class FriendshipsController {
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Long userId = userDetails.getId();
-        Iterable<Friendship> friendRequests = friendshipRepository.findByReceiverIdAndStatus(userId, "pending");
-        model.addAttribute("friendRequests", friendRequests);
+
+        Iterable<Friendship> friendRequests = friendshipRepository.findByReceiverIdAndStatusAndSenderIdNot(
+                userId, "pending", userId
+        );
+
+        List<FriendRequestDto> friendRequestDtos = new ArrayList<>();
+        for (Friendship friendship : friendRequests) {
+            User sender = userRepository.findById(friendship.getSenderId())
+                    .orElseThrow(() -> new RuntimeException("Sender not found"));
+            friendRequestDtos.add(new FriendRequestDto(
+                    friendship.getId(),
+                    sender.getId(),
+                    sender.getFirstName(),
+                    sender.getLastName(),
+                    friendship.getStatus()
+            ));
+        }
+
+        model.addAttribute("friendRequests", friendRequestDtos);
         return "friends/index";
     }
 
-// /friendship
-    @PostMapping("/search")
+
+    @PostMapping("/friends/new")
     public RedirectView toggleFriendshipRequest(@RequestParam Long receiverId){
         String username = userService.getAuthenticatedUserEmail();
         User userDetails = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Long userId = userDetails.getId();
         Friendship existingFriendship = friendshipRepository.findBySenderIdAndReceiverId(userId, receiverId);
-        // send the notification
         if (existingFriendship != null) {
-            friendshipRepository.delete(existingFriendship);
+            String status = existingFriendship.getStatus();
+
+            if ("pending".equals(status) || "accepted".equals(status)) {
+                friendshipRepository.delete(existingFriendship);
+            }
         } else {
             Friendship friendshipRequest = new Friendship();
             friendshipRequest.setSenderId(userId);
@@ -56,9 +79,29 @@ public class FriendshipsController {
             friendshipRequest.setReceiverId(receiverId);
             friendshipRequest.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendshipRequest);
-            // send the notification
         }
             return new RedirectView("/search");
     }
 
+    @PostMapping("/friends/accept/{id}")
+    public String acceptFriendRequest(@PathVariable Long id) {
+        Friendship friendship = friendshipRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Friendship request not found"));
+
+        friendship.setStatus("accepted");
+        friendshipRepository.save(friendship);
+
+        return "redirect:/friends";
+    }
+
+    @PostMapping("/friends/reject/{id}")
+    public String rejectFriendRequest(@PathVariable Long id) {
+        Friendship friendship = friendshipRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Friendship request not found"));
+
+        friendship.setStatus("rejected");
+        friendshipRepository.save(friendship);
+
+        return "redirect:/friends";
+    }
 }

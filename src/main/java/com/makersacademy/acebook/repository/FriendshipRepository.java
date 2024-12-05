@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     Friendship findBySenderIdAndReceiverId(Long userId, Long receiverId);
+
     Iterable<Friendship> findByReceiverIdAndStatus(Long userId, String pending);
 
     @Query(value = "SELECT COUNT(*) FROM friendships WHERE sender_id = :userId OR receiver_id = :userId", nativeQuery = true)
@@ -14,4 +15,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query(value = "SELECT * FROM friendships WHERE sender_id = :userId OR receiver_id = :userId", nativeQuery = true)
     List<Friendship> findFriendshipsForUser(long userId);
+
+//    Iterable<Friendship> findByReceiverIdAndStatus(Long userId, String pending);
+    Iterable<Friendship> findByReceiverIdAndStatusAndSenderIdNot(Long receiverId, String status, Long senderId);
+
 }
