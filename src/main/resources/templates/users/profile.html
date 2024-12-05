@@ -172,12 +172,33 @@
         <div class="bio_friend_cards_container">
             <div th:each="friend: ${friends}">
                 <div class="card bio_friend_card">
-                    <a th:href="@{/profile/{id}(id=${friend.id})}"><div th:text="${friend.firstName} + ' ' + ${friend.lastName}" class="bio_friend_name clickable"></div></a>
-                    <button class="blue_btn clickable">Message</button>
+                    <a th:href="@{/profile/{id}(id=${friend.id})}">
+                        <div th:text="${friend.firstName} + ' ' + ${friend.lastName}" class="bio_friend_name clickable"></div>
+                    </a>
+                    <div th:if="${friend.id == currentUserId}">
+                        <a th:href="@{/profile/{id}(id=${currentUserId})}" class="blue_btn clickable">Profile</a>
+                    </div>
+                    <div th:if="${friend.id != currentUserId}">
+                        <div th:if="${friendsWithLoggedInUser[friend.id] == 'pending'}">
+                            <button class="blue_btn" disabled>Pending</button>
+                        </div>
+
+                        <div th:if="${friendsWithLoggedInUser[friend.id] == 'friends'}" class="profile_friend_div">
+                            <a href="/chats" class="blue_btn clickable">Message</a>
+                            <a href="/" class="profile_remove_friend clickable">Remove Friend</a>
+                        </div>
+
+                        <div th:if="${friendsWithLoggedInUser[friend.id] == 'not friends'}">
+                            <form action="/friends/new" method="post">
+                                <input type="hidden" name="receiverId" th:value="${friend.id}" />
+                                <input type="hidden" name="page" th:value="profile" />
+                                <button type="submit" class="blue_btn clickable">Add Friend</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div th:insert="posts/new_post :: newPost"></div>
