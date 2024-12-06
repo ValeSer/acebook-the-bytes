@@ -47,6 +47,12 @@
         </div>
         <h1 th:text="${#strings.capitalize(profileUser.firstName)} + ' ' + ${#strings.capitalize(profileUser.lastName)}" class="page_header profile_name_header"></h1>
         <p th:text="${numFriends} + ' friends'" class="profile_num_friends"></p>
+        <th:block th:if="${currentUserId} != ${profileUserId}">
+            <form th:action="@{/chat/new}" method="post">
+                <input type="hidden" name="profileUserId" th:value="${profileUserId}" />
+                <button type="submit" class="clickable red_btn" th:text=" 'Message ' + ${profileUser.firstName}"></button>
+            </form>
+        </th:block>
     </div>
 
     <!-- Horizontal Divider -->
