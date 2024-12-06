@@ -158,7 +158,7 @@ public class PostsController {
             boolean commentIsLikedByUser = commentLikesService.userHasLikedComment(comment.getId(), user.getId());
             userLikedCommentsMap.put(comment.getId(), commentIsLikedByUser);
         }
-
+        model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("post", post);
         model.addAttribute("user", user);

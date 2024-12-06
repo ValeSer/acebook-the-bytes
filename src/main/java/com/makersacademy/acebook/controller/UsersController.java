@@ -145,18 +145,22 @@ public class UsersController {
 
     @PostMapping("/users/update")
     public String updateProfile(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        User loggedInUser = userService.getUserProfile();
+        Long loggedInUserId = loggedInUser.getId();
         userService.updateUser(user);
         redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
-        return "redirect:/profile";
+        return "redirect:/profile/" + loggedInUserId;
     }
 
     @PostMapping("/uploadProfilePic")
     public RedirectView uploadProfilePicture(@RequestParam MultipartFile profilePhotoUrl) {
         try {
+            User loggedInUser = userService.getUserProfile();
+            Long loggedInUserId = loggedInUser.getId();
             String photoUrl = cloudinaryService.uploadImage(profilePhotoUrl);
 
             userService.updateProfilePictureFromUrl(photoUrl);
-            return new RedirectView("/profile");
+            return new RedirectView("/profile/" + loggedInUserId);
         } catch (Exception e) {
             return new RedirectView("/profile?error=upload");
         }

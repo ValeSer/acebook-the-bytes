@@ -206,7 +206,7 @@ INSERT INTO messages (sender_id, chat_id, message, created_at) VALUES
 INSERT INTO friendships (sender_id, receiver_id, status, created_at) VALUES
 (1, 2, 'confirmed', '2024-09-15 10:00:00'),
 (1, 3, 'confirmed', '2024-09-20 14:30:00'),
-(1, 4, 'blocked', '2024-09-25 09:00:00'),
+(1, 4, 'confirmed', '2024-09-25 09:00:00'),
 (1, 5, 'confirmed', '2024-09-28 16:45:00'),
 (2, 3, 'confirmed', '2024-10-05 11:00:00'),
 (2, 4, 'confirmed', '2024-10-06 13:10:00'),

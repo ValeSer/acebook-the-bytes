@@ -13,6 +13,7 @@ import java.util.Optional;
 @Component
 public class CommentLikeListener {
 
+    private static PostRepository postRepository;
     private static UserRepository userRepository;
     private static NotificationRepository notificationRepository;
     private static CommentRepository commentRepository;
@@ -29,6 +30,12 @@ public class CommentLikeListener {
         CommentLikeListener.commentRepository = commentRepository;
     }
 
+    public static void setPostRepository(PostRepository postRepository) {
+        CommentLikeListener.postRepository = postRepository;
+    }
+
+
+
 
     @PrePersist
     public void beforeSave(CommentLike commentLike) {
@@ -44,12 +51,16 @@ public class CommentLikeListener {
         Comment comment = commentRepository.findById(commentLike.getCommentId())
                 .orElseThrow(() -> new RuntimeException("Comment Id not found"));
 
+        Post post = postRepository.findById(comment.getPostId())
+                .orElseThrow(() -> new RuntimeException("Post Id not found"));
+
+        commentLikeNotification.setPostId(post.getId());
         commentLikeNotification.setReceiverId(comment.getCommenterId());
         commentLikeNotification.setIsRead(Boolean.FALSE);
         commentLikeNotification.setCommentLikeId(commentLike.getId());
-        commentLikeNotification.setType("new_comment_like");
+        commentLikeNotification.setType("like");
 
-        User sender = userRepository.findById(comment.getCommenterId())
+        User sender = userRepository.findById(commentLike.getUserId())
                 .orElseThrow(() -> new RuntimeException("Sender user not found"));
 
         String firstName = sender.getFirstName();

@@ -44,10 +44,11 @@ public class CommentListener {
         Post post = postRepository.findById(comment.getPostId())
             .orElseThrow(() -> new RuntimeException("Post Id not found"));
 
+        commentNotification.setPostId(comment.getPostId());
         commentNotification.setReceiverId((post.getUserId()));
         commentNotification.setIsRead(Boolean.FALSE);
         commentNotification.setCommentId(comment.getId());
-        commentNotification.setType("new_comment");
+        commentNotification.setType("comment");
 
         User sender = userRepository.findById(comment.getCommenterId())
                 .orElseThrow(() -> new RuntimeException("Sender user not found"));
