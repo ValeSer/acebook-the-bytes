@@ -181,3 +181,10 @@ button[onclick="toggleBioForm()"] {
     font-size: 0.8rem;
     opacity: 0.7;
 }
+
+.profile_request_btn {
+    height: 3rem;
+    width: 12rem;
+    margin-bottom: 2rem;
+    border-radius: 24px;
+}

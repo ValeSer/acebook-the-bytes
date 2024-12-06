@@ -109,7 +109,7 @@
                     <div class="comment_details_container">
                         <div class="comment_user_details">
                             <img th:src="${postComment['profilePhotoUrl']}" class="post_comment_photo card_user_img" />
-                            <a th:href="@{/profile/{id}(id=${postComment['id']})}"><p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p></a>
+                            <a th:href="@{/profile/{id}(id=${postComment['commenterId']})}"><p th:text="${postComment['firstName']} + ' ' + ${postComment['lastName']}" class="comment_name"></p></a>
                         </div>
                         <form th:if="${postComment['commenterId'] == profileUserId}" action="#" th:action="@{/comment/{id}(id=${postComment['id']})}" th:method="delete">
                             <input type="submit" value="Delete" class="comment_delete_btn clickable"/>
@@ -170,6 +170,9 @@
 
     <div id="friends" class="tab-content">
         <div class="bio_friend_cards_container">
+
+            <a href="/friends" class="blue_btn profile_request_btn clickable ">Friend Requests</a>
+
             <div th:each="friend: ${friends}">
                 <div class="card bio_friend_card">
                     <a th:href="@{/profile/{id}(id=${friend.id})}">
