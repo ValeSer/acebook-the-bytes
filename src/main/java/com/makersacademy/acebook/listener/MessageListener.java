@@ -47,6 +47,7 @@ public class MessageListener {
         messageNotification.setReceiverId(receiverId);
         messageNotification.setIsRead(Boolean.FALSE);
         messageNotification.setMessageId(message.getId());
+        messageNotification.setChatId(message.getChatId());
         messageNotification.setType("message");
 
         User sender = userRepository.findById(message.getSenderId())
