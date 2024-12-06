@@ -1,5 +1,7 @@
 package com.makersacademy.acebook.model;
 
+import com.makersacademy.acebook.listener.FriendshipListener;
+import com.makersacademy.acebook.listener.MessageListener;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@EntityListeners(MessageListener.class)
 @Table(name = "MESSAGES")
 public class Message {
 

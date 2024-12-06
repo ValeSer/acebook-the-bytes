@@ -1,13 +1,7 @@
 package com.makersacademy.acebook.config;
 
-import com.makersacademy.acebook.listener.CommentLikeListener;
-import com.makersacademy.acebook.listener.CommentListener;
-import com.makersacademy.acebook.listener.FriendshipListener;
-import com.makersacademy.acebook.listener.PostLikeListener;
-import com.makersacademy.acebook.repository.CommentRepository;
-import com.makersacademy.acebook.repository.NotificationRepository;
-import com.makersacademy.acebook.repository.PostRepository;
-import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.listener.*;
+import com.makersacademy.acebook.repository.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +21,13 @@ public class ListenerConfig {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private ChatRepository chatRepository;
+
+
     @PostConstruct
     public void configureListeners() {
         FriendshipListener.setUserRepository(userRepository);
@@ -43,5 +44,10 @@ public class ListenerConfig {
         PostLikeListener.setUserRepository(userRepository);
         PostLikeListener.setNotificationRepository(notificationRepository);
         PostLikeListener.setPostRepository(postRepository);
+
+        MessageListener.setChatRepository(chatRepository);
+        MessageListener.setUserRepository(userRepository);
+        MessageListener.setNotificationRepository(notificationRepository);
+
     }
 }
