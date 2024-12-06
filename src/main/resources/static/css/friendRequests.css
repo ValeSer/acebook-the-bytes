@@ -15,3 +15,26 @@
   font-size: 30px;
   margin-left: 10px;
 }
+
+.requests_container {
+    max-width: 32rem;
+    margin: 4rem auto;
+}
+
+.friend-request-card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.friend-request-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.friend_reject {
+    all: unset;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
