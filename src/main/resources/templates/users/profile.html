@@ -180,12 +180,31 @@
                     </div>
                     <div th:if="${friend.id != currentUserId}">
                         <div th:if="${friendsWithLoggedInUser[friend.id] == 'pending'}">
-                            <button class="blue_btn" disabled>Pending</button>
+                            <div th:if="${currentUserId == friendshipDetailsMap[friend.id].receiverId}">
+                                <div class="profile_friend_div">
+                                    <form th:action="@{/friends/accept/{id}(id=${friendshipDetailsMap[friend.id].id})}" method="post">
+                                        <input type="hidden" name="page" th:value="profile" />
+                                        <button type="submit" class="clickable blue_btn">Accept</button>
+                                    </form>
+
+                                    <form th:action="@{/friends/reject/{id}(id=${friendshipDetailsMap[friend.id].id})}" method="post">
+                                        <input type="hidden" name="page" th:value="profile" />
+                                        <button type="submit" class="clickable profile_reject">Reject</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div th:if="${currentUserId == friendshipDetailsMap[friend.id].senderId}">
+                                <button class="blue_btn" disabled>Pending</button>
+                            </div>
                         </div>
 
                         <div th:if="${friendsWithLoggedInUser[friend.id] == 'friends'}" class="profile_friend_div">
                             <a href="/chats" class="blue_btn clickable">Message</a>
-                            <a href="/" class="profile_remove_friend clickable">Remove Friend</a>
+                            <form th:action="@{/friends/reject/{id}(id=${friendshipDetailsMap[friend.id].id})}" method="post">
+                                <input type="hidden" name="page" th:value="profile" />
+                                <button type="submit" class="clickable profile_remove_friend">Remove Friend</button>
+                            </form>
                         </div>
 
                         <div th:if="${friendsWithLoggedInUser[friend.id] == 'not friends'}">
