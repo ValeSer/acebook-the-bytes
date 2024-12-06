@@ -44,9 +44,10 @@ public class PostLikeListener {
         postLikeNotification.setReceiverId(post.getUserId());
         postLikeNotification.setIsRead(Boolean.FALSE);
         postLikeNotification.setPostLikeId(postLike.getId());
-        postLikeNotification.setType("new_post_like");
+        postLikeNotification.setPostId(post.getId());
+        postLikeNotification.setType("like");
 
-        User sender = userRepository.findById(post.getUserId())
+        User sender = userRepository.findById(postLike.getUserId())
                 .orElseThrow(() -> new RuntimeException("Sender user not found"));
 
         String firstName = sender.getFirstName();

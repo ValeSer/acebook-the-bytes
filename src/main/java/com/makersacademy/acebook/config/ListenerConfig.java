@@ -40,6 +40,7 @@ public class ListenerConfig {
         CommentLikeListener.setUserRepository(userRepository);
         CommentLikeListener.setNotificationRepository(notificationRepository);
         CommentLikeListener.setCommentRepository(commentRepository);
+        CommentLikeListener.setPostRepository(postRepository);
 
         PostLikeListener.setUserRepository(userRepository);
         PostLikeListener.setNotificationRepository(notificationRepository);
