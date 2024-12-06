@@ -188,3 +188,7 @@ button[onclick="toggleBioForm()"] {
     margin-bottom: 2rem;
     border-radius: 24px;
 }
+
+.profile_message_btn {
+    margin: 0 auto;
+}
