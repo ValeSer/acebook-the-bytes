@@ -50,7 +50,7 @@
         <th:block th:if="${currentUserId} != ${profileUserId}">
             <form th:action="@{/chat/new}" method="post">
                 <input type="hidden" name="profileUserId" th:value="${profileUserId}" />
-                <button type="submit" class="clickable red_btn" th:text=" 'Message ' + ${profileUser.firstName}"></button>
+                <button type="submit" class="clickable blue_btn profile_message_btn" th:text=" 'Message ' + ${profileUser.firstName}"></button>
             </form>
         </th:block>
     </div>
