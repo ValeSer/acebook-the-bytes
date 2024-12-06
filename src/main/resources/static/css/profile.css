@@ -180,3 +180,10 @@ button[onclick="toggleBioForm()"] {
     flex-direction: column;
     gap: 0.5rem;
 }
+
+.profile_request_btn {
+    height: 3rem;
+    width: 12rem;
+    margin-bottom: 2rem;
+    border-radius: 24px;
+}

@@ -170,6 +170,9 @@
 
     <div id="friends" class="tab-content">
         <div class="bio_friend_cards_container">
+
+            <a href="/friends" class="blue_btn profile_request_btn clickable ">Friend Requests</a>
+
             <div th:each="friend: ${friends}">
                 <div class="card bio_friend_card">
                     <a th:href="@{/profile/{id}(id=${friend.id})}">
