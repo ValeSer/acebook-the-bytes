@@ -19,11 +19,11 @@
 
   <div th:insert="fragments/nav :: navigation(${currentUserId})"></div>
 
-<div class="results-container">
+<div class="results-container requests_container">
   <div th:each="request : ${friendRequests}" class="card friend-request-card">
     <div>
       <p class="sender-name" th:text="${request.senderFirstName} + ' ' + ${request.senderLastName}">Sender Name</p>
-      <p class="request-status">Friend request from <span th:text="${request.senderFirstName}">Sender</span></p>
+<!--      <p class="request-status">Friend request from <span th:text="${request.senderFirstName}">Sender</span></p>-->
     </div>
 
     <div class="friend-request-actions">
@@ -32,7 +32,7 @@
       </form>
 
       <form th:action="@{/friends/reject/{id}(id=${request.friendshipId})}" method="post">
-        <button type="submit" class="clickable red_btn">Reject</button>
+        <button type="submit" class="clickable friend_reject">Reject</button>
       </form>
     </div>
   </div>
