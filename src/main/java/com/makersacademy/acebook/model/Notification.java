@@ -122,5 +122,9 @@ public class Notification {
     }
 
     public void setPostLikeId(Long id) {
+
+    }
+
+    public void setMessageId(Long id) {
     }
 }
