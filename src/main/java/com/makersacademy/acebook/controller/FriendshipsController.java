@@ -58,6 +58,7 @@ public class FriendshipsController {
 
         model.addAttribute("post", new Post());
         model.addAttribute("currentUser", user);
+        model.addAttribute("currentUserId", userId);
         model.addAttribute("friendRequests", friendRequestDtos);
         return "friends/index";
     }
