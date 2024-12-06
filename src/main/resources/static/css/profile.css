@@ -169,16 +169,17 @@ button[onclick="toggleBioForm()"] {
     padding: 0 2rem;
 }
 
-.profile_remove_friend {
-    font-size: 0.8rem;
-    opacity: 0.7;
-    text-align: center;
-}
-
 .profile_friend_div {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    align-items: center;
+}
+
+.profile_reject, .profile_remove_friend {
+    all: unset;
+    font-size: 0.8rem;
+    opacity: 0.7;
 }
 
 .profile_request_btn {

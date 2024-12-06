@@ -93,23 +93,31 @@ public class FriendshipsController {
     }
 
     @PostMapping("/friends/accept/{id}")
-    public String acceptFriendRequest(@PathVariable Long id) {
+    public String acceptFriendRequest(@PathVariable Long id, @RequestParam(required = false) String page) {
         Friendship friendship = friendshipRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Friendship request not found"));
 
         friendship.setStatus("accepted");
         friendshipRepository.save(friendship);
 
+        if ("profile".equals(page)) {
+            return "redirect:/profile/" + friendship.getSenderId();
+        }
+
         return "redirect:/friends";
     }
 
     @PostMapping("/friends/reject/{id}")
-    public String rejectFriendRequest(@PathVariable Long id) {
+    public String rejectFriendRequest(@PathVariable Long id, @RequestParam(required = false) String page) {
         Friendship friendship = friendshipRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Friendship request not found"));
 
         friendship.setStatus("rejected");
         friendshipRepository.save(friendship);
+
+        if ("profile".equals(page)) {
+            return "redirect:/profile/" + friendship.getReceiverId();
+        }
 
         return "redirect:/friends";
     }

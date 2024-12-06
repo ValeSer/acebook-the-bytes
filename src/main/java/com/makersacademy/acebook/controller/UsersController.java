@@ -99,6 +99,7 @@ public class UsersController {
         }
 
         Map<Long, String> friendshipMap = new HashMap<>();
+        Map<Long, Friendship> friendshipDetailsMap = new HashMap<>();
 
         for (User friend : friends.values()) {
             Friendship friendship = friendshipRepository.findBySenderIdAndReceiverId(loggedInUserId, friend.getId());
@@ -108,12 +109,16 @@ public class UsersController {
 
             if (friendship == null) {
                 friendshipMap.put(friend.getId(), "not friends");
-            } else if ("confirmed".equals(friendship.getStatus())) {
+            } else if ("accepted".equals(friendship.getStatus()) || "confirmed".equals(friendship.getStatus())) {
                 friendshipMap.put(friend.getId(), "friends");
             } else if ("pending".equals(friendship.getStatus())) {
                 friendshipMap.put(friend.getId(), "pending");
-            } else if ("blocked".equals(friendship.getStatus())) {
+            } else if ("rejected".equals(friendship.getStatus())) {
                 friendshipMap.put(friend.getId(), "not friends");
+            }
+
+            if (friendship != null) {
+                friendshipDetailsMap.put(friend.getId(), friendship);
             }
         }
 
@@ -131,6 +136,7 @@ public class UsersController {
         modelAndView.addObject("commentLikes", commentLikeMap);
         modelAndView.addObject("formattedTimestamps", formattedTimestamps);
         modelAndView.addObject("friendsWithLoggedInUser", friendshipMap);
+        modelAndView.addObject("friendshipDetailsMap", friendshipDetailsMap);
         modelAndView.addObject("post", new Post());
         modelAndView.addObject("comment", new Comment());
 
