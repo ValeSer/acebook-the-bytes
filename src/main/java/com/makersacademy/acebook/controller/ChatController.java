@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,5 +86,26 @@ public class ChatController {
         return "chats/show";
     }
 
+    @PostMapping("/chat/new")
+    public RedirectView createOrGetChat(@RequestParam Long profileUserId) {
 
+        String username = userService.getAuthenticatedUserEmail();
+        User currentUser = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Long currentUserId = currentUser.getId();
+
+        // Check if a chat already exists
+        Chat existingChat = chatRepository.findByUser1IdAndUser2IdOrUser2IdAndUser1Id(currentUserId, profileUserId, currentUserId, profileUserId);
+        if (existingChat != null) {
+            return new RedirectView("/chat/" + existingChat.getId());
+        }
+
+        Chat newChat = new Chat();
+        newChat.setUser1Id(currentUserId);
+        newChat.setUser2Id(profileUserId);
+        chatRepository.save(newChat);
+
+        // Redirect to the new chat
+        return new RedirectView("/chat/" + newChat.getId());
+    }
 }
